@@ -1,0 +1,7 @@
+build
+.react-router
+node_modules
+tests
+package-lock.json
+*.md
+*.mdx

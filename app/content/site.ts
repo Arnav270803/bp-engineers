@@ -1,0 +1,21 @@
+// Company and contact details. The single source for these: components never
+// hard-code a phone number, the email address or the WhatsApp link.
+
+export const site = {
+  name: "B.P. Engineers",
+  tagline: "Strength · Precision · Reliability",
+  domain: "bpfoundry.in",
+  canonicalUrl: "https://www.bpfoundry.in",
+  address: { street: "Mubarikpur, Ramgarh Road", region: "Punjab, India" },
+  phones: [
+    { label: "+91 98780 42569", href: "tel:+919878042569" },
+    { label: "+91 98159 53331", href: "tel:+919815953331" },
+    { label: "+91 62800 05358", href: "tel:+916280005358" },
+  ],
+  email: { label: "bpengineerschd@yahoo.com", href: "mailto:bpengineerschd@yahoo.com" },
+  whatsapp: { label: "+91 98780 42569", href: "https://wa.me/919878042569" },
+  mapsUrl: "https://maps.google.com/?q=Mubarikpur,Ramgarh+Road,Punjab,India",
+  fontsUrl:
+    "https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap",
+  analyticsId: "G-PELCQTYKBD",
+} as const;

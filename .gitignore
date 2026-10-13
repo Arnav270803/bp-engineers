@@ -1,0 +1,11 @@
+node_modules/
+build/
+.react-router/
+*.log
+.DS_Store
+.vercel/
+
+# The comparison suite that checks this site against the original static site.
+# It is a separate local project: it needs a copy of the original site and holds
+# a large recording of it, so it is kept out of this repository.
+tests/
