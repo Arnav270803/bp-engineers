@@ -1,8 +1,8 @@
 # B.P. Engineers website: architecture
 
-Last updated: 2026-10-13
+Last updated: 2026-10-19
 
-This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, and at this point it looks and behaves exactly like that original.
+This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below.
 
 ## Goals
 
@@ -178,6 +178,15 @@ Text copied with its apparent typos:
 - Each route declares its own title and description, with the same text as the original.
 - The canonical tag is on the home page only, as in the original.
 - Not added yet: a canonical tag on every page, `sitemap.xml`, `robots.txt`, and the redirects from the old `.html` addresses.
+
+## Browser-tab icon
+
+`components/layout/AnimatedFavicon.tsx` lives in the document head in `root.tsx`, so every page uses the approved BP ladle pouring molten metal. It stays mounted across page navigation.
+
+- `public/favicon.png` is the still 32-pixel icon included in pre-rendered HTML. `public/favicon.ico` contains still 16-, 32- and 48-pixel versions for clients that request the conventional icon path.
+- `app/assets/foundry-pour-frames.png` contains 72 pre-rendered 32-pixel frames, arranged in 12 columns. Vite gives this asset a hashed URL. The client decodes it once, caches the individual frame URLs, and updates the icon at 12 frames per second for a six-second loop.
+- Inactive tabs and visitors who request reduced motion get the still icon. Image or canvas failures also retain the still icon. No animation library or continuous artwork rendering is needed.
+- Actual tab animation depends on whether the browser refreshes changed favicon URLs; the still image also works without JavaScript. The icon does not alter the site's header logo or page layout.
 
 ## Verification
 

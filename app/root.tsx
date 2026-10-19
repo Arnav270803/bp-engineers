@@ -1,6 +1,7 @@
 import { Fragment, useEffect, type ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts, isRouteErrorResponse } from "react-router";
 import type { Route } from "./+types/root";
+import { AnimatedFavicon } from "~/components/layout/AnimatedFavicon";
 import { Footer } from "~/components/layout/Footer";
 import { Header } from "~/components/layout/Header";
 import { NotFound } from "~/components/layout/NotFound";
@@ -28,6 +29,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <Meta />
         <Links />
+        <AnimatedFavicon />
         {/* Analytics loads in production builds only, so development and tests record no visits. */}
         {import.meta.env.PROD && (
           <>
