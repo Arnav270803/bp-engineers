@@ -1,6 +1,6 @@
 # B.P. Engineers website: architecture
 
-Last updated: 2026-10-19
+Last updated: 2026-10-20
 
 This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below.
 
@@ -45,8 +45,9 @@ app/
   content/                text and lists as typed data, icons, articles
   lib/                    form requests, form memory, page-change handling
   app.css                 base rules, theme, Tailwind entry
-public/                   files copied into the build as they are
+public/                   files copied into the build as they are, including .htaccess
 scripts/preview.mjs       serves the production build locally
+.github/workflows/        deploy.yml: builds on every push to main and publishes the deploy branch
 ```
 
 A piece of UI used by one page stays in that page's folder. It moves into `components/ui/` when a second page needs it with identical styling. Pieces that only look alike stay separate: the product cards on the home and products pages, the two CTA bands, and the form fields on the contact and quote pages all differ in detail.
@@ -64,7 +65,7 @@ A piece of UI used by one page stays in that page's folder. It moves into `compo
 | `/contact` | `routes/contact.tsx` | `contact.html` |
 | `/quote` | `routes/quote.tsx` | `quote.html` |
 
-The old `.html` addresses must be redirected to the new ones when this site replaces the original (see [Open items](#open-items)).
+The old `.html` addresses are redirected to the new ones with a 301 by `public/.htaccess` (see [Build and deploy](#build-and-deploy)).
 
 ## Styling
 
@@ -177,7 +178,8 @@ Text copied with its apparent typos:
 
 - Each route declares its own title and description, with the same text as the original.
 - The canonical tag is on the home page only, as in the original.
-- Not added yet: a canonical tag on every page, `sitemap.xml`, `robots.txt`, and the redirects from the old `.html` addresses.
+- The old `.html` addresses redirect to the new ones (`public/.htaccess`).
+- Not added yet: a canonical tag on every page, `sitemap.xml` and `robots.txt`.
 
 ## Browser-tab icon
 
@@ -218,11 +220,17 @@ The suite is not in this repository. It needs a copy of the original site beside
 
 The build produces static files in `build/client/`: one `index.html` per page, plus `assets/`. Any host that serves static files can serve it.
 
-- **Vercel** builds from this repository. If it does not pick the settings up by itself, they are: build command `npm run build`, output directory `build/client`.
-- **Hostinger** shared hosting serves files as they are and does not run the build. Run `npm run build` and upload the contents of `build/client/` to the site's `public_html` folder.
-- `__spa-fallback.html` is for hosts that can serve one file for unknown addresses. It shows the "page not found" screen.
+**Hostinger** (Single Web Hosting) hosts bpfoundry.in. It serves files as they are and does not run the build, so the build runs on GitHub:
 
-Neither deployment has been tried yet.
+1. Every push to `main` runs `.github/workflows/deploy.yml`: `npm ci`, typecheck, lint, build.
+2. The workflow replaces the contents of the `deploy` branch with the contents of `build/client/`. That branch holds only built files. Never edit it by hand.
+3. Hostinger's Git deployment (hPanel, Advanced, Git) is connected to the `deploy` branch and pulls it into `public_html` on every push to it.
+
+So every push to `main` that passes the checks goes live within a few minutes. If a change does not show, clear the cache in hPanel.
+
+`public/.htaccess` is read by Hostinger's LiteSpeed server. It forces HTTPS, redirects the old `.html` addresses with a 301, answers `/about` with `about/index.html` without a redirect to `/about/`, and answers unknown addresses with `__spa-fallback.html` and status 404, which shows the site's "page not found" screen.
+
+**Vercel** would also work: it builds from this repository, with build command `npm run build` and output directory `build/client`. It is not used. On Vercel the redirects would go in `vercel.json`.
 
 ## Growth path
 
@@ -232,7 +240,7 @@ Neither deployment has been tried yet.
 
 ## Open items
 
-1. **Redirects from the old addresses.** Search results and saved links point at `about.html`, `products.html` and so on. Before this site replaces the original, each old address must redirect to its new one: on Hostinger in an `.htaccess` file (its LiteSpeed server reads them), on Vercel in `vercel.json`.
-2. **The oddities kept from the original:** which to fix (see the table above).
-3. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
-4. **Node version:** Node 22.22 or later is needed before moving to React Router 8.
+1. **The oddities kept from the original:** which to fix (see the table above).
+2. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
+3. **Node version:** Node 22.22 or later is needed before moving to React Router 8. The deploy workflow uses the latest Node 22.
+4. **Page views in Google Analytics:** confirm after the first deploy that moving between pages records page views (see [Forms and analytics](#forms-and-analytics)).

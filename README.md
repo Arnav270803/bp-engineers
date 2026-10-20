@@ -27,10 +27,9 @@ The finished site is written to `build/client/`: one `index.html` per page, plus
 
 ## Host it
 
-- **Vercel:** import this repository. If Vercel does not pick the settings up by itself, use build command `npm run build` and output directory `build/client`.
-- **Hostinger shared hosting:** run `npm run build` and upload the contents of `build/client/` to the site's `public_html` folder. Hostinger serves the files as they are and does not run the build.
+The site is hosted on Hostinger. **Every push to `main` goes live.** GitHub builds the site (`.github/workflows/deploy.yml`) and puts the finished files on the `deploy` branch, and Hostinger pulls that branch into `public_html`. Never edit the `deploy` branch by hand.
 
-Before this site replaces the earlier one on the live domain, the old addresses (`about.html`, `products.html` and so on) must be redirected to the new ones (`/about`, `/products`). That is not set up yet. See "Open items" in [ARCHITECTURE.md](ARCHITECTURE.md).
+`public/.htaccess` redirects the old addresses (`about.html`, `products.html` and so on) to the new ones (`/about`, `/products`). "Build and deploy" in [ARCHITECTURE.md](ARCHITECTURE.md) has the details.
 
 ## Where things are
 

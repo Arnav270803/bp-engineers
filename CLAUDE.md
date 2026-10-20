@@ -5,8 +5,9 @@ The B.P. Engineers website (bpfoundry.in) in React and TypeScript, rebuilt from 
 ## Where things are
 
 - `app/` is the React application: `routes/` (one file per page), `components/`, `content/` (all text and lists), `lib/`, `app.css` (base rules and theme).
-- `public/` holds files copied into the build as they are.
+- `public/` holds files copied into the build as they are, including `.htaccess` (redirects and addresses on Hostinger).
 - `build/client/` is the production build. It is generated, not committed.
+- `.github/workflows/deploy.yml` builds the site on every push to `main` and publishes it to the `deploy` branch, which Hostinger serves on bpfoundry.in.
 - `tests/` exists only on the developer's machine and is ignored by git. It is the suite that compares this site with the original static site, with its own `package.json` and README. The original site itself sits beside the project in `../public_html/` there and must never be edited.
 
 ## Commands
@@ -18,6 +19,7 @@ The B.P. Engineers website (bpfoundry.in) in React and TypeScript, rebuilt from 
 
 ## Rules
 
+- Every push to `main` goes live on bpfoundry.in. Push only when the change is meant to be published. Never edit or push to the `deploy` branch by hand.
 - Until the owner decides to change the design, the site must match the original exactly: structure, text, computed styles, geometry, pixels, links and behaviour.
 - The oddities listed in ARCHITECTURE.md under "Kept from the original on purpose" are deliberate. Do not fix them without being asked.
 - Keep one piece of text as one piece. Do not write `{a}{b}` or `text{" "}` where a single run of text is meant: join it into one expression or put it in a content file. Splitting it shifts the letters by a fraction of a pixel.
