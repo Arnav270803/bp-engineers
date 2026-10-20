@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BuKH0Kmv.js";function t(...e){return e.filter(Boolean).join(` `)}var n=e(),r={default:``,light:`bg-surface-muted`,dark:`bg-surface-inverse`};function i({tone:e=`default`,id:i,children:a}){return(0,n.jsx)(`section`,{id:i,className:t(`px-gutter py-section`,r[e]),children:a})}export{t as n,i as t};

@@ -1,0 +1,34 @@
+# Read by Hostinger's LiteSpeed server. Copied into the build as it is.
+DirectoryIndex index.html
+Options -Indexes
+RewriteEngine On
+
+# Always use HTTPS.
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Addresses of the original static site, redirected to their new addresses.
+# The index.html rule only matches what the visitor typed, so the server's own
+# lookup of index.html for "/" does not loop.
+RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^about\.html$ /about [R=301,L]
+RewriteRule ^products\.html$ /products [R=301,L]
+RewriteRule ^gallery\.html$ /gallery [R=301,L]
+RewriteRule ^blog\.html$ /blog [R=301,L]
+RewriteRule ^blog-moulding-box-guide\.html$ /blog/moulding-box-guide [R=301,L]
+RewriteRule ^contact\.html$ /contact [R=301,L]
+RewriteRule ^quote\.html$ /quote [R=301,L]
+
+# Every page is a folder with an index.html: /about is answered with
+# about/index.html directly. DirectorySlash Off stops the server from first
+# redirecting /about to /about/.
+<IfModule mod_dir.c>
+  DirectorySlash Off
+</IfModule>
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+?)/?$ /$1/index.html [L]
+
+# Unknown addresses get the site's own "page not found" screen, with status 404.
+ErrorDocument 404 /__spa-fallback.html
