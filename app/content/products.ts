@@ -1,7 +1,10 @@
 // Text of the products page, copied verbatim from the original, including the
-// apparent typo "Fl belt" (see ARCHITECTURE.md).
+// apparent typo "Fl belt" (see ARCHITECTURE.md). Casting equipment cards 05 to
+// 08 are new: they lead to the product pages, with text from the product page
+// workbook.
 import type { PageHeroContent } from "~/components/layout/PageHero";
 import type { IconName } from "./icons";
+import { productPagePath } from "./product-pages";
 
 export const productsMeta = {
   title: "Products — B.P. Engineers | Moulding Boxes, Ladles, Conveyors",
@@ -23,6 +26,8 @@ export interface Product {
   text: string;
   specs: Array<{ label: string; value: string }>;
   tag: string;
+  /** The address of the product's own page. The whole card leads there. */
+  page?: string;
 }
 
 export type ProductCategoryId = "casting" | "sand" | "fab";
@@ -50,6 +55,7 @@ export const productCategories: ProductCategory[] = [
           { label: "Finish", value: "Shot blasted / painted" },
         ],
         tag: "Custom Sizes Available",
+        page: productPagePath("moulding-boxes"),
       },
       {
         number: "02",
@@ -86,6 +92,62 @@ export const productCategories: ProductCategory[] = [
           { label: "Range", value: "Full foundry toolkit" },
         ],
         tag: "Full Range Available",
+      },
+      {
+        number: "05",
+        icon: "car",
+        title: "Pallet Cars",
+        text: "Fabricated or cast iron pallet cars with SG iron or CI wheels and heavy-duty bearings, built for sand casting environments.",
+        specs: [
+          { label: "Body", value: "Fabricated or CI" },
+          { label: "Wheels", value: "SG iron or CI" },
+          { label: "Bearings", value: "Heavy duty" },
+          { label: "Lead time", value: "45–60 days" },
+        ],
+        tag: "Built to Your Line",
+        page: productPagePath("pallet-cars"),
+      },
+      {
+        number: "06",
+        icon: "ring",
+        title: "Bushes",
+        text: "Round and oval guide bushes in 20MnCr5 / AISI 8620, supplied as matched pairs for accurate cope and drag alignment.",
+        specs: [
+          { label: "Material", value: "20MnCr5 / AISI 8620" },
+          { label: "Hardness", value: "58–62 HRC" },
+          { label: "Finish", value: "Ground" },
+          { label: "MOQ", value: "100 sets" },
+        ],
+        tag: "Standard Sizes in Stock",
+        page: productPagePath("bushes"),
+      },
+      {
+        number: "07",
+        icon: "crosshair",
+        title: "Matchplate & Moulding Pins",
+        text: "Pins that locate the pattern plate and moulding box accurately during moulding, made to your drawing or sample.",
+        specs: [
+          { label: "Material", value: "EN19 / 20MnCr5" },
+          { label: "Finish", value: "Ground" },
+          { label: "Lead time", value: "15–25 days" },
+          { label: "MOQ", value: "20 sets" },
+        ],
+        tag: "Made to Drawing",
+        page: productPagePath("matchplate-moulding-pins"),
+      },
+      {
+        number: "08",
+        icon: "pin",
+        title: "Closing Pins",
+        text: "Closing pins hold the cope and drag aligned when the mould is closed. Made to your drawing or sample.",
+        specs: [
+          { label: "Material", value: "EN19 / 20MnCr5" },
+          { label: "Finish", value: "Ground" },
+          { label: "Lead time", value: "20–25 days" },
+          { label: "MOQ", value: "25 sets" },
+        ],
+        tag: "Made to Drawing",
+        page: productPagePath("closing-pins"),
       },
     ],
   },

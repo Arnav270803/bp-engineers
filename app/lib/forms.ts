@@ -1,6 +1,7 @@
 // The contact and quote forms post to the same Google Apps Script web app, and
 // both send the same eight fields. This file builds those fields and sends
-// them exactly as the original site does.
+// them exactly as the original site does. The quote form on each product page
+// sends the same eight fields too.
 
 export const FORM_ENDPOINT =
   "https://script.google.com/macros/s/AKfycbys8XYMuv31aX99Bb7g2WO7PcC5GWirY5EdlJ77tc2WwY4kQvKX1vW3FJBUcSGX0B0J/exec";
@@ -73,6 +74,33 @@ export function buildQuotePayload(fields: QuoteFields): EnquiryPayload {
       .join(" | "),
     city: fields.city + (fields.country ? `, ${fields.country}` : ""),
     source: fields.source || "Quote Page",
+  };
+}
+
+/** The name, company and phone fields every product page form has; each page adds its own details. */
+export const PRODUCT_QUOTE_FIELDS = ["name", "company", "phone"] as const;
+
+/**
+ * What a product page form sends: the product's name, and each detail that
+ * was filled in as "Label: value". It has no email or city field.
+ */
+export function buildProductQuotePayload(
+  product: string,
+  details: ReadonlyArray<{ name: string; label: string }>,
+  fields: Record<string, string>,
+): EnquiryPayload {
+  return {
+    name: fields.name,
+    company: fields.company,
+    phone: fields.phone,
+    email: "",
+    product,
+    requirements: details
+      .map((detail) => (fields[detail.name] ? `${detail.label}: ${fields[detail.name]}` : ""))
+      .filter(Boolean)
+      .join(" | "),
+    city: "",
+    source: "Product Page",
   };
 }
 

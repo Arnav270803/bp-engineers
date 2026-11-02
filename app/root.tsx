@@ -1,5 +1,5 @@
 import { Fragment, useEffect, type ReactNode } from "react";
-import { Links, Meta, Outlet, Scripts, isRouteErrorResponse } from "react-router";
+import { Links, Meta, Outlet, Scripts, isRouteErrorResponse, useMatches } from "react-router";
 import type { Route } from "./+types/root";
 import { AnimatedFavicon } from "~/components/layout/AnimatedFavicon";
 import { Footer } from "~/components/layout/Footer";
@@ -10,6 +10,7 @@ import { WhatsAppButton } from "~/components/layout/WhatsAppButton";
 import { Button } from "~/components/ui/Button";
 import { Section } from "~/components/ui/Section";
 import { site } from "~/content/site";
+import { usesOwnFrame } from "~/lib/frame";
 import { useDocumentScrolling, usePageInstance } from "~/lib/navigation";
 import "./app.css";
 
@@ -55,8 +56,10 @@ export function Layout({ children }: { children: ReactNode }) {
  * The wrapper elements and their ids are kept from the original. The nav is
  * styled to stick to the top of the window, but its wrapper is only as tall as
  * the nav, so it scrolls away with the page. That is how the original behaves.
+ *
+ * With `ownFrame`, the page draws its own header and footer (lib/frame.ts).
  */
-function PageFrame({ children }: { children: ReactNode }) {
+function PageFrame({ children, ownFrame = false }: { children: ReactNode; ownFrame?: boolean }) {
   const instance = usePageInstance();
   useDocumentScrolling(instance);
   useEffect(() => {
@@ -66,21 +69,28 @@ function PageFrame({ children }: { children: ReactNode }) {
 
   return (
     <Fragment key={instance}>
-      <div id="nav-placeholder">
-        <Header />
-      </div>
-      {children}
-      <div id="footer-placeholder">
-        <Footer />
-        <WhatsAppButton />
-      </div>
+      {ownFrame ? (
+        children
+      ) : (
+        <>
+          <div id="nav-placeholder">
+            <Header />
+          </div>
+          {children}
+          <div id="footer-placeholder">
+            <Footer />
+            <WhatsAppButton />
+          </div>
+        </>
+      )}
     </Fragment>
   );
 }
 
 export default function App() {
+  const ownFrame = usesOwnFrame(useMatches());
   return (
-    <PageFrame>
+    <PageFrame ownFrame={ownFrame}>
       <Outlet />
     </PageFrame>
   );

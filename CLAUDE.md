@@ -20,7 +20,7 @@ The B.P. Engineers website (bpfoundry.in) in React and TypeScript, rebuilt from 
 ## Rules
 
 - Every push to `main` goes live on bpfoundry.in. Push only when the change is meant to be published. Never edit or push to the `deploy` branch by hand.
-- Until the owner decides to change the design, the site must match the original exactly: structure, text, computed styles, geometry, pixels, links and behaviour.
+- Until the owner decides to change the design, the site must match the original exactly: structure, text, computed styles, geometry, pixels, links and behaviour. The exception is the product pages (`/products/<category>/<product>`, `content/product-pages/`, `components/product-page/`) and the products page cards that lead to them: they have their own approved design, described in ARCHITECTURE.md under "Product pages".
 - The oddities listed in ARCHITECTURE.md under "Kept from the original on purpose" are deliberate. Do not fix them without being asked.
 - Keep one piece of text as one piece. Do not write `{a}{b}` or `text{" "}` where a single run of text is meant: join it into one expression or put it in a content file. Splitting it shifts the letters by a fraction of a pixel.
 - Style with Tailwind classes. Colours, fonts, weights, type sizes, letter spacing and layout constants come from the theme in `app/app.css`. One-off measurements are written directly.

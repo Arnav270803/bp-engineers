@@ -20,6 +20,9 @@ RewriteRule ^blog-moulding-box-guide\.html$ /blog/moulding-box-guide [R=301,L]
 RewriteRule ^contact\.html$ /contact [R=301,L]
 RewriteRule ^quote\.html$ /quote [R=301,L]
 
+# The product pages sit in a category folder that has no page of its own.
+RewriteRule ^products/casting-equipment/?$ /products [R=302,L]
+
 # Every page is a folder with an index.html: /about is answered with
 # about/index.html directly. DirectorySlash Off stops the server from first
 # redirecting /about to /about/.

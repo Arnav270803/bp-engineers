@@ -1,5 +1,6 @@
 import { readdirSync } from "node:fs";
 import type { Config } from "@react-router/dev/config";
+import { productPagePaths } from "./app/content/product-pages";
 
 // Every article in app/content/blog gets its own pre-rendered page.
 const articlePaths = readdirSync("app/content/blog")
@@ -9,7 +10,8 @@ const articlePaths = readdirSync("app/content/blog")
 export default {
   // No server: every page is written to an HTML file at build time.
   ssr: false,
-  prerender: ({ getStaticPaths }) => [...getStaticPaths(), ...articlePaths],
+  // Product pages are listed by app/content/product-pages.
+  prerender: ({ getStaticPaths }) => [...getStaticPaths(), ...articlePaths, ...productPagePaths],
   // React Router 8 behaviour, switched on early so the later upgrade is small.
   future: {
     v8_middleware: true,

@@ -24,6 +24,7 @@
   --spacing-gutter: 6%; /* side padding of the nav, sections and footer */
   --spacing-section: 80px; /* top and bottom padding of a section */
   --spacing-nav: 70px; /* nav height; the mobile menu starts below it */
+  --spacing-editorial-gutter: 64px; /* side padding of the product pages */
 
   /* Colours, named by role. */
   --color-brand: #f07d1a;
@@ -45,15 +46,42 @@
   --color-whatsapp: #25d366;
   --color-danger: #ff5555;
 
+  /* Product pages. They have their own editorial design: warm paper, dark
+     ink, one rust accent and serif type. See ARCHITECTURE.md. */
+  --color-editorial-surface: #f1f0ea;
+  --color-editorial-panel: #e7e5dd;
+  --color-editorial-ink: #20251f;
+  --color-editorial-ink-soft: #363b33;
+  --color-editorial-label: #4e5148;
+  --color-editorial-muted: #6d7068;
+  --color-editorial-subtle: #8c8d85;
+  --color-editorial-faint: #a1a096;
+  --color-editorial-line: #c9c8c1;
+  --color-editorial-line-strong: #a8a9a0;
+  --color-editorial-accent: #bb4d29;
+  --color-editorial-accent-strong: #a3421f;
+  --color-editorial-accent-bright: #e95b2b;
+  --color-editorial-accent-on-dark: #dc6a40;
+  --color-editorial-dark: #1c201a;
+  --color-editorial-on-dark: #eeece5;
+  --color-editorial-on-dark-soft: #c6c7bc;
+  --color-editorial-on-dark-muted: #8e9185;
+
   /* Type. */
   --font-display: "Oswald", sans-serif;
   --font-body: "Source Sans 3", sans-serif;
+  /* Product pages. Gelasio and Arimo have the same measurements as Georgia
+     and Arial, so the page keeps its shape while the fonts load. */
+  --font-editorial-serif: "Gelasio", Georgia, serif;
+  --font-editorial-sans: "Arimo", Arial, sans-serif;
+  --font-editorial-heavy: "Archivo Black", "Arial Black", sans-serif;
 
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
+  --text-9: 9px;
   --text-10: 10px;
   --text-11: 11px;
   --text-12: 12px;
@@ -67,9 +95,14 @@
   --text-20: 20px;
   --text-21: 21px;
   --text-22: 22px;
+  --text-23: 23px;
   --text-24: 24px;
+  --text-25: 25px;
   --text-26: 26px;
   --text-28: 28px;
+  --text-30: 30px;
+  --text-32: 32px;
+  --text-36: 36px;
   --text-38: 38px;
   --text-42: 42px;
   --text-60: 60px;
@@ -82,6 +115,12 @@
   --text-cta-title: clamp(24px, 3vw, 38px);
   --text-cta-title-sm: clamp(22px, 3vw, 36px);
   --text-featured-title: clamp(22px, 3vw, 32px);
+  /* Product pages. Each reaches its full size at a 1440px window. */
+  --text-editorial-display: clamp(56px, 7.2vw, 104px);
+  --text-editorial-title: clamp(32px, 3.2vw, 46px);
+  --text-editorial-statement: clamp(24px, 2.36vw, 34px);
+  --text-editorial-figure: clamp(42px, 3.75vw, 54px);
+  --text-editorial-sign: clamp(40px, 5.28vw, 76px);
 
   --tracking-xs: 1px;
   --tracking-sm: 1.5px;
@@ -89,6 +128,18 @@
   --tracking-lg: 2.5px;
   --tracking-xl: 3px;
   --tracking-2xl: 4px;
+  /* Product pages: small capitals are spaced in ems, headlines are tightened. */
+  --tracking-caps-tight: 0.08em;
+  --tracking-caps-snug: 0.1em;
+  --tracking-caps: 0.15em;
+  --tracking-caps-wide: 0.2em;
+  --tracking-caps-wider: 0.25em;
+  --tracking-caps-widest: 0.3em;
+  --tracking-display: -0.052em;
+  --tracking-headline: -0.035em;
+  --tracking-figure: -0.045em;
+  --tracking-snug: -0.02em;
+  --tracking-logo: -0.07em;
 
   /* Transitions use the browser's defaults, as the original's do. */
   --default-transition-timing-function: ease;

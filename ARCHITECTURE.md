@@ -1,8 +1,8 @@
 # B.P. Engineers website: architecture
 
-Last updated: 2026-10-20
+Last updated: 2026-11-02
 
-This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below.
+This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, and five product pages with a design of their own (see [Product pages](#product-pages)).
 
 ## Goals
 
@@ -42,8 +42,10 @@ app/
     ui/                   Section, SectionHeader, Button, Icon, AppLink, FormField
     home/ about/ products/ gallery/ blog/ contact/ quote/
                           the pieces that belong to one page
+    product-page/         the pieces of the product pages, which share one design
   content/                text and lists as typed data, icons, articles
-  lib/                    form requests, form memory, page-change handling
+    product-pages/        one file per product page, from the product page workbook
+  lib/                    form requests, form memory, page-change handling, page frame
   app.css                 base rules, theme, Tailwind entry
 public/                   files copied into the build as they are, including .htaccess
 scripts/preview.mjs       serves the production build locally
@@ -59,6 +61,7 @@ A piece of UI used by one page stays in that page's folder. It moves into `compo
 | `/` | `routes/home.tsx` | `index.html` |
 | `/about` | `routes/about.tsx` | `about.html` |
 | `/products` | `routes/products.tsx` | `products.html` |
+| `/products/casting-equipment/<product>` | `routes/product-page.tsx` (`/products/:category/:slug`) | None: new pages, see [Product pages](#product-pages) |
 | `/gallery` | `routes/gallery.tsx` | `gallery.html` |
 | `/blog` | `routes/blog.tsx` | `blog.html` |
 | `/blog/moulding-box-guide` | `routes/blog-article.tsx` (`/blog/:slug`) | `blog-moulding-box-guide.html` |
@@ -84,6 +87,7 @@ All styling is Tailwind classes. `app/app.css` holds three things.
 | Letter spacing | `tracking-xs` 1px to `tracking-2xl` 4px |
 | Layout | `gutter` 6%, `section` 80px, `nav` 70px; the spacing unit is 4px |
 | Motion | the ticker animation; the browser's default easing |
+| Product pages | colours `editorial-*`, fonts `font-editorial-serif`, `-sans` and `-heavy`, the fluid sizes `text-editorial-*`, letter spacing in ems (`tracking-caps-*`, `tracking-display`, `tracking-headline`, `tracking-figure`, `tracking-snug`, `tracking-logo`) and `editorial-gutter` 64px. Only the product pages use them |
 
 Colour roles:
 
@@ -134,6 +138,26 @@ The original was eight separate documents. This site is one application, so `app
 React Router's own scroll restoration is not used. It animated the jump to the top, and it scrolled to the top on `#` links whose target does not exist, which the original does not do.
 
 **One known gap.** The original site sends no cache headers, so real browsers keep its pages in their back-forward cache. When that cache is used, Back returns a page exactly as it was left, including the open product tab and an open mobile menu. This site restores the scroll position and form values, and resets the rest.
+
+## Product pages
+
+Five product pages, one per product in the product page workbook: Moulding Boxes, Pallet Cars, Bushes, Matchplate & Moulding Pins and Closing Pins, at `/products/casting-equipment/<product>`. They are new pages, not part of the original, and the owner approved a design of their own for them: an editorial layout on warm paper, with dark ink, one rust accent and serif type. The rest of the site keeps the original design.
+
+**Reaching them.** On the products page, the Moulding Boxes card and four new Casting Equipment cards (05 to 08, in the existing card design) lead to the pages: the title link of such a card is stretched over the whole card, and its "Request Quote" link is raised above it so that it still goes to `/quote`. The pages link to each other through their related products and their footer. Back returns to the products page where it was left.
+
+**Their own frame.** A product page has no nav bar: its header is the logo alone, leading to the home page, and it has a footer of its own. The route exports a `handle` with `ownFrame` (`lib/frame.ts`), and `root.tsx` then leaves out the site's header, footer and WhatsApp button; the page draws its own, and reuses `WhatsAppButton`. An address that names no product keeps the site's frame and shows "page not found".
+
+**Content.** Each page is a typed data file in `content/product-pages/`, written from its sheet of the workbook. Obvious typos were corrected and the workbook's editing notes left out. Words shared by all pages are in `shared.ts`. `keepTogether` (in `keep-together.ts`) stops a line from breaking inside "0.1 mm", a range such as "45–60" or "B.P. Engineers". A page leaves out a chapter its sheet has nothing for, such as "Where they're used" for the pins, and the contents list and chapter numbers follow. Adding a product means adding a file and listing it in `index.ts`; `react-router.config.ts` reads the list to pre-render the pages, so `index.ts` and the files it imports use no `~/` imports.
+
+**Design.**
+
+- The theme values are prefixed `editorial-` (see [Styling](#styling)). Sizes reach their full value at a 1440px window and shrink with it; below 900px the layout is one column.
+- The fonts are Gelasio, Arimo and Archivo Black from Google Fonts, loaded by these pages only, through the route's `links`. Gelasio and Arimo have the measurements of Georgia and Arial, so the layout does not move while they load.
+- There are no product photos yet, so the large figure at the top shows the product's line drawing (`ProductDrawing`). Setting `hero.image` in a page's file replaces it with a photo.
+- The contents list and the round quote link stay in view beside the text, and the list marks the chapter being read. Their links scroll without adding a history entry. A `#` entry made by the browser carries no router state, so `lib/navigation.ts` files it under the same key as the first page of the visit, and Back would put that page at the wrong position; it would also have to step back through each `#` before leaving the page.
+- No animation was added. Scrolling to a chapter is smooth, as `scroll-behavior: smooth` already makes every `#` link on the site.
+
+**The quote form** sends the same eight fields as the site's other forms, to the same script, with the product's name in `product`, its details in `requirements` and `Product Page` as the source. The script cannot receive files, so the form asks for drawings by WhatsApp or email instead of uploading them.
 
 ## Content
 
@@ -204,6 +228,8 @@ The comparisons cover eight pages at 15 widths from 360 to 2560px, scrolled view
 
 The suite is not in this repository. It needs a copy of the original site beside the project and holds a large recording of it, so it lives in a `tests/` folder on the developer's machine, which git ignores. It stays useful only while the site is meant to match the original; once the design starts to change, it is retired.
 
+Since the product pages, the products page differs from the original on purpose: the Moulding Boxes card leads to its page and four cards were added. The suite reports these differences. Every other page was checked on 2026-11-02 by comparing screenshots with the build before the change, at 1440 and 390px: all are identical pixel for pixel.
+
 ## Commands
 
 | Command | What it does |
@@ -228,7 +254,7 @@ The build produces static files in `build/client/`: one `index.html` per page, p
 
 So every push to `main` that passes the checks goes live within a few minutes. If a change does not show, clear the cache in hPanel.
 
-`public/.htaccess` is read by Hostinger's LiteSpeed server. It forces HTTPS, redirects the old `.html` addresses with a 301, answers `/about` with `about/index.html` without a redirect to `/about/`, and answers unknown addresses with `__spa-fallback.html` and status 404, which shows the site's "page not found" screen.
+`public/.htaccess` is read by Hostinger's LiteSpeed server. It forces HTTPS, redirects the old `.html` addresses with a 301, answers `/about` with `about/index.html` without a redirect to `/about/`, and answers unknown addresses with `__spa-fallback.html` and status 404, which shows the site's "page not found" screen. `/products/casting-equipment`, the folder of the product pages, has no page of its own and is redirected to `/products` with a 302.
 
 **Vercel** would also work: it builds from this repository, with build command `npm run build` and output directory `build/client`. It is not used. On Vercel the redirects would go in `vercel.json`.
 
@@ -244,3 +270,6 @@ So every push to `main` that passes the checks goes live within a few minutes. I
 2. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
 3. **Node version:** Node 22.22 or later is needed before moving to React Router 8. The deploy workflow uses the latest Node 22.
 4. **Page views in Google Analytics:** confirm after the first deploy that moving between pages records page views (see [Forms and analytics](#forms-and-analytics)).
+5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)).
+6. **Drawing uploads:** the product page form asks for drawings by WhatsApp or email. Uploading them needs the Google Apps Script to accept files.
+7. **Workbook questions:** bush hardness is 58–62 HRC in the Bushes specifications but 58–60 HRC in its FAQ and on the Moulding Boxes page; the pallet car bearing make "NGC" may mean NBC. The pages show both as written.
