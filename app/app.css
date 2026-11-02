@@ -25,6 +25,7 @@
   --spacing-section: 80px; /* top and bottom padding of a section */
   --spacing-nav: 70px; /* nav height; the mobile menu starts below it */
   --spacing-editorial-gutter: 64px; /* side padding of the product pages */
+  --spacing-landing-gutter: clamp(20px, 4.8vw, 80px); /* side padding of the home page */
 
   /* Colours, named by role. */
   --color-brand: #f07d1a;
@@ -67,6 +68,39 @@
   --color-editorial-on-dark-soft: #c6c7bc;
   --color-editorial-on-dark-muted: #8e9185;
 
+  /* Home page. It has its own design: cream and stone sections, deep green,
+     an orange accent and serif headlines. See ARCHITECTURE.md. */
+  --color-landing-surface: #eeeae1;
+  --color-landing-surface-light: #f6f3ea;
+  --color-landing-surface-stone: #e2dfd0;
+  --color-landing-surface-mist: #e3e4dc;
+  --color-landing-band: #dfa76e;
+  --color-landing-band-soft: #e5b785;
+  --color-landing-band-ink: #4b3a26;
+  --color-landing-band-ink-soft: #6b5237;
+  --color-landing-sheet-ink: #5c4a33;
+  --color-landing-sheet-line: #3d3a2c;
+  --color-landing-sheet-guide: #b07a46;
+  --color-landing-ink: #21211a;
+  --color-landing-ink-muted: #75746a;
+  --color-landing-emphasis: #797a6c;
+  --color-landing-emphasis-warm: #74502a;
+  --color-landing-emphasis-on-dark: #d9c19e;
+  --color-landing-line: #bebab1;
+  --color-landing-line-strong: #a19e95;
+  --color-landing-action: #e39950;
+  --color-landing-action-soft: #e6aa64;
+  --color-landing-action-strong: #d6823a;
+  --color-landing-dark: #14251f;
+  --color-landing-dark-deep: #10211b;
+  --color-landing-dark-raised: #1e2e24;
+  --color-landing-on-dark: #eeefe6;
+  --color-landing-on-dark-soft: #c8d0c6;
+  --color-landing-on-dark-muted: #acbbb2;
+  --color-landing-on-dark-faint: #64776d;
+  --color-landing-on-dark-sign: #c4ceb9;
+  --color-landing-on-dark-line: #495a54;
+
   /* Type. */
   --font-display: "Oswald", sans-serif;
   --font-body: "Source Sans 3", sans-serif;
@@ -75,12 +109,16 @@
   --font-editorial-serif: "Gelasio", Georgia, serif;
   --font-editorial-sans: "Arimo", Arial, sans-serif;
   --font-editorial-heavy: "Archivo Black", "Arial Black", sans-serif;
+  /* Home page: the same two families as the product pages' serif and sans. */
+  --font-landing-serif: "Gelasio", Georgia, serif;
+  --font-landing-sans: "Arimo", Arial, sans-serif;
 
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
+  --text-8: 8px;
   --text-9: 9px;
   --text-10: 10px;
   --text-11: 11px;
@@ -121,6 +159,16 @@
   --text-editorial-statement: clamp(24px, 2.36vw, 34px);
   --text-editorial-figure: clamp(42px, 3.75vw, 54px);
   --text-editorial-sign: clamp(40px, 5.28vw, 76px);
+  /* Home page. Sizes follow the window, as in the approved design at 1265px. */
+  --text-landing-hero: clamp(46px, 13.9vw, 200px);
+  --text-landing-hero-sub: clamp(26px, 4.4vw, 64px);
+  --text-landing-title: clamp(38px, 4.6vw, 66px);
+  --text-landing-title-sm: clamp(32px, 3.5vw, 50px);
+  --text-landing-subtitle: clamp(26px, 2.75vw, 38px);
+  --text-landing-cta: clamp(48px, 6vw, 86px);
+  --text-landing-stat: clamp(32px, 3.3vw, 46px);
+  --text-landing-sign: clamp(44px, 9.8vw, 142px);
+  --text-landing-menu: clamp(32px, 4vw, 56px);
 
   --tracking-xs: 1px;
   --tracking-sm: 1.5px;
@@ -144,17 +192,6 @@
   /* Transitions use the browser's defaults, as the original's do. */
   --default-transition-timing-function: ease;
   --default-transition-duration: 0s;
-
-  --animate-ticker: tick 28s linear infinite;
-
-  @keyframes tick {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
 }
 
 /* The original site's reset, verbatim. */

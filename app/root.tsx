@@ -51,7 +51,7 @@ export function Layout({ children }: { children: ReactNode }) {
 /**
  * The parts every page shares, around the page itself. The whole frame is
  * keyed by the page instance, so each page load starts fresh: menu closed,
- * tabs and forms reset, ticker restarted.
+ * tabs and forms reset.
  *
  * The wrapper elements and their ids are kept from the original. The nav is
  * styled to stick to the top of the window, but its wrapper is only as tall as

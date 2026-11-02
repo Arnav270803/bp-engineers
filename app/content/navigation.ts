@@ -1,4 +1,4 @@
-// Link lists shared by every page: nav, mobile menu, footer and ticker.
+// Link lists shared by every page: nav, mobile menu and footer.
 import type { NavSection } from "~/lib/navigation";
 
 export const navLinks: Array<{ label: string; to: string; section: NavSection }> = [
@@ -43,18 +43,3 @@ export const footerCompanyLinks = [
 ];
 
 export const footerCopyright = "© 2025 B.P. Engineers. All rights reserved. · Est. 1990 · Mubarikpur, Punjab";
-
-/** Shown twice in a row so the ticker loops without a gap. */
-export const tickerItems = [
-  "Moulding Boxes",
-  "Pouring Ladles",
-  "Casting Flasks",
-  "Conveyor Systems",
-  "Sand Rollers",
-  "Sand Hoppers",
-  "CNC Machining",
-  "Sheet Metal Fabrication",
-  "Structural Welding",
-  "Custom OEM Manufacturing",
-  "Est. 1990 · Punjab, India",
-];

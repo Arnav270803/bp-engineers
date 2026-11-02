@@ -1,15 +1,23 @@
 import type { Route } from "./+types/home";
-import { CtaBand } from "~/components/home/CtaBand";
-import { Hero } from "~/components/home/Hero";
-import { IndustryCard } from "~/components/home/IndustryCard";
-import { ProductPreviewCard } from "~/components/home/ProductPreviewCard";
-import { StrengthCard } from "~/components/home/StrengthCard";
-import { Ticker } from "~/components/layout/Ticker";
-import { Button } from "~/components/ui/Button";
-import { Section } from "~/components/ui/Section";
-import { SectionHeader } from "~/components/ui/SectionHeader";
-import { homeMeta, industries, productPreview, strengths } from "~/content/home";
+import { CustomSection } from "~/components/home/CustomSection";
+import { EquipmentSection } from "~/components/home/EquipmentSection";
+import { HomeCta } from "~/components/home/HomeCta";
+import { HomeFooter } from "~/components/home/HomeFooter";
+import { HomeHeader } from "~/components/home/HomeHeader";
+import { HomeHero } from "~/components/home/HomeHero";
+import { IndustriesSection } from "~/components/home/IndustriesSection";
+import { IntroSection } from "~/components/home/IntroSection";
+import { KnowledgeSection } from "~/components/home/KnowledgeSection";
+import { PeopleSection, ProcessSection } from "~/components/home/PeopleSection";
+import { WhatsAppButton } from "~/components/layout/WhatsAppButton";
+import { homeMeta } from "~/content/home";
 import { site } from "~/content/site";
+import type { FrameHandle } from "~/lib/frame";
+
+// The home page has its own design, header and footer (ARCHITECTURE.md, "Home page").
+export const handle: FrameHandle = { ownFrame: () => true };
+
+export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: site.productFontsUrl }];
 
 export const meta: Route.MetaFunction = () => [
   { title: homeMeta.title },
@@ -19,46 +27,21 @@ export const meta: Route.MetaFunction = () => [
 
 export default function Home() {
   return (
-    <>
-      <div id="ticker-placeholder">
-        <Ticker />
-      </div>
-
-      <Hero />
-
-      <Section id="products">
-        <SectionHeader label={productPreview.label} title={productPreview.title} sub={productPreview.sub} />
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-px bg-line">
-          {productPreview.cards.map((card) => (
-            <ProductPreviewCard key={card.number} {...card} />
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-          <Button to={productPreview.action.to} variant="ghost">
-            {productPreview.action.label}
-          </Button>
-        </div>
-      </Section>
-
-      <Section tone="light">
-        <SectionHeader label={strengths.label} title={strengths.title} />
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6">
-          {strengths.cards.map((card) => (
-            <StrengthCard key={card.title} {...card} />
-          ))}
-        </div>
-      </Section>
-
-      <Section tone="dark">
-        <SectionHeader label={industries.label} title={industries.title} sub={industries.sub} onDark />
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-px bg-[rgba(255,255,255,0.06)]">
-          {industries.cards.map((card) => (
-            <IndustryCard key={card.name} {...card} />
-          ))}
-        </div>
-      </Section>
-
-      <CtaBand />
-    </>
+    <div className="bg-landing-surface font-landing-sans text-landing-ink">
+      <HomeHeader />
+      <main>
+        <HomeHero />
+        <IntroSection />
+        <EquipmentSection />
+        <PeopleSection />
+        <ProcessSection />
+        <CustomSection />
+        <IndustriesSection />
+        <KnowledgeSection />
+        <HomeCta />
+      </main>
+      <HomeFooter />
+      <WhatsAppButton />
+    </div>
   );
 }

@@ -1,9 +1,7 @@
 import { AppLink } from "~/components/ui/AppLink";
 import { productsCta } from "~/content/products";
 
-// Looks like the band on the home page but differs: a smaller heading that is
-// not an <h2>, no stacking on narrow screens, and a plain link with no hover
-// effect. See home/CtaBand.
+// The band at the foot of the products page, kept from the original.
 export function CustomCta() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-7.5 bg-brand px-gutter py-15">

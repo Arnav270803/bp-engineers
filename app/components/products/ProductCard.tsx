@@ -3,9 +3,6 @@ import { Icon } from "~/components/ui/Icon";
 import { productQuoteLink, type Product } from "~/content/products";
 import { cx } from "~/lib/cx";
 
-// Looks like the preview card on the home page but differs in padding, icon
-// size and title size, so the two are kept separate.
-//
 // A card with a product page is a link: its title's link is stretched over the
 // whole card, and the quote link is raised above it so it still works.
 export function ProductCard({ number, icon, title, text, specs, tag, page }: Product) {

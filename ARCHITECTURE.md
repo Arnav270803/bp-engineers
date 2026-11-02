@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-02
 
-This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, and five product pages with a design of their own (see [Product pages](#product-pages)).
+This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, five product pages with a design of their own (see [Product pages](#product-pages)) and a new design for the home page (see [Home page](#home-page)).
 
 ## Goals
 
@@ -38,7 +38,7 @@ app/
   routes.ts               route table
   routes/                 one file per page
   components/
-    layout/               Header (nav and mobile menu), Ticker, Footer, WhatsAppButton, PageHero, NotFound
+    layout/               Header (nav and mobile menu), Footer, WhatsAppButton, PageHero, NotFound
     ui/                   Section, SectionHeader, Button, Icon, AppLink, FormField
     home/ about/ products/ gallery/ blog/ contact/ quote/
                           the pieces that belong to one page
@@ -46,19 +46,20 @@ app/
   content/                text and lists as typed data, icons, articles
     product-pages/        one file per product page, from the product page workbook
   lib/                    form requests, form memory, page-change handling, page frame
+  assets/home/            the home page photos, placeholders for now
   app.css                 base rules, theme, Tailwind entry
 public/                   files copied into the build as they are, including .htaccess
 scripts/preview.mjs       serves the production build locally
 .github/workflows/        deploy.yml: builds on every push to main and publishes the deploy branch
 ```
 
-A piece of UI used by one page stays in that page's folder. It moves into `components/ui/` when a second page needs it with identical styling. Pieces that only look alike stay separate: the product cards on the home and products pages, the two CTA bands, and the form fields on the contact and quote pages all differ in detail.
+A piece of UI used by one page stays in that page's folder. It moves into `components/ui/` when a second page needs it with identical styling. Pieces that only look alike stay separate: the form fields on the contact and quote pages differ in detail, and the home page and the product pages each keep their own small parts, although both use the same two fonts.
 
 ## Routes
 
 | Address | Route file | Address on the original site |
 |---|---|---|
-| `/` | `routes/home.tsx` | `index.html` |
+| `/` | `routes/home.tsx` | `index.html`, since redesigned: see [Home page](#home-page) |
 | `/about` | `routes/about.tsx` | `about.html` |
 | `/products` | `routes/products.tsx` | `products.html` |
 | `/products/casting-equipment/<product>` | `routes/product-page.tsx` (`/products/:category/:slug`) | None: new pages, see [Product pages](#product-pages) |
@@ -86,8 +87,9 @@ All styling is Tailwind classes. `app/app.css` holds three things.
 | Type sizes | `text-10` to `text-60` in pixels, plus the fluid sizes `text-hero`, `text-page-title`, `text-section-title`, `text-tagline`, `text-cta-title`, `text-cta-title-sm`, `text-featured-title` |
 | Letter spacing | `tracking-xs` 1px to `tracking-2xl` 4px |
 | Layout | `gutter` 6%, `section` 80px, `nav` 70px; the spacing unit is 4px |
-| Motion | the ticker animation; the browser's default easing |
+| Motion | the browser's default easing; there are no animations |
 | Product pages | colours `editorial-*`, fonts `font-editorial-serif`, `-sans` and `-heavy`, the fluid sizes `text-editorial-*`, letter spacing in ems (`tracking-caps-*`, `tracking-display`, `tracking-headline`, `tracking-figure`, `tracking-snug`, `tracking-logo`) and `editorial-gutter` 64px. Only the product pages use them |
+| Home page | colours `landing-*`, fonts `font-landing-serif` and `-sans`, the fluid sizes `text-landing-*`, `text-8` and `landing-gutter`, which grows with the window from 20 to 80px. Only the home page uses them |
 
 Colour roles:
 
@@ -130,7 +132,7 @@ Merging breakpoints, adopting Tailwind's reset and regrouping type sizes are res
 
 The original was eight separate documents. This site is one application, so `app/lib/navigation.ts` reproduces what a document load did:
 
-- Moving to another page, or clicking a link to the page you are on, starts the page fresh: mobile menu closed, tabs and forms reset, ticker restarted. The whole page frame is keyed by a counter of "document loads" to get this.
+- Moving to another page, or clicking a link to the page you are on, starts the page fresh: menus closed, tabs and forms reset. The whole page frame is keyed by a counter of "document loads" to get this.
 - A page opened by a link appears at the top at once. A page reached with back or forward appears where it was left. Neither is animated, although the site sets `scroll-behavior: smooth`.
 - A link that only changes the `#` part of the address is left to the browser, as it was in the original. `AppLink` does this for links to the page being viewed, and the placeholder `#` links are plain anchors.
 - A form reached with back or forward has its typed values put back, as browsers do for a normal page. `app/lib/form-memory.ts` keeps them per history entry. A form opened by a link starts empty.
@@ -141,9 +143,9 @@ React Router's own scroll restoration is not used. It animated the jump to the t
 
 ## Product pages
 
-Five product pages, one per product in the product page workbook: Moulding Boxes, Pallet Cars, Bushes, Matchplate & Moulding Pins and Closing Pins, at `/products/casting-equipment/<product>`. They are new pages, not part of the original, and the owner approved a design of their own for them: an editorial layout on warm paper, with dark ink, one rust accent and serif type. The rest of the site keeps the original design.
+Five product pages, one per product in the product page workbook: Moulding Boxes, Pallet Cars, Bushes, Matchplate & Moulding Pins and Closing Pins, at `/products/casting-equipment/<product>`. They are new pages, not part of the original, and the owner approved a design of their own for them: an editorial layout on warm paper, with dark ink, one rust accent and serif type. The rest of the site keeps the original design, apart from the home page.
 
-**Reaching them.** On the products page, the Moulding Boxes card and four new Casting Equipment cards (05 to 08, in the existing card design) lead to the pages: the title link of such a card is stretched over the whole card, and its "Request Quote" link is raised above it so that it still goes to `/quote`. The pages link to each other through their related products and their footer. Back returns to the products page where it was left.
+**Reaching them.** On the products page, the Moulding Boxes card and four new Casting Equipment cards (05 to 08, in the existing card design) lead to the pages: the title link of such a card is stretched over the whole card, and its "Request Quote" link is raised above it so that it still goes to `/quote`. The home page's Moulding Boxes links lead to its page too. The pages link to each other through their related products and their footer. Back returns to the products page where it was left.
 
 **Their own frame.** A product page has no nav bar: its header is the logo alone, leading to the home page, and it has a footer of its own. The route exports a `handle` with `ownFrame` (`lib/frame.ts`), and `root.tsx` then leaves out the site's header, footer and WhatsApp button; the page draws its own, and reuses `WhatsAppButton`. An address that names no product keeps the site's frame and shows "page not found".
 
@@ -159,10 +161,29 @@ Five product pages, one per product in the product page workbook: Moulding Boxes
 
 **The quote form** sends the same eight fields as the site's other forms, to the same script, with the product's name in `product`, its details in `requirements` and `Product Page` as the source. The script cannot receive files, so the form asks for drawings by WhatsApp or email instead of uploading them.
 
+## Home page
+
+The owner approved a new design for the home page, given as five screenshots of a finished page: cream and stone sections, a deep green, an orange accent, serif headlines and large photos. It replaces the original home page. The rest of the site keeps the original design, apart from the product pages.
+
+**Sections**, in order: the hero over a full-window photo; "Strength in every detail" with the four products as links; the equipment, as four photo cards; the workshop and three figures; the four steps from brief to build; custom manufacturing, with a drawing of a moulding box; the industries; the featured guide; the closing call to get a quote; the footer.
+
+**Its own frame.** Like the product pages, the route exports a `handle` with `ownFrame`, so `root.tsx` leaves out the site's header, footer and WhatsApp button. The header sits over the hero: the logo, Products, Get a quote and a Menu button. The menu covers the whole window, above the WhatsApp button, and closes with its button or the Escape key; at 768px and below the header keeps only the logo, Get a quote and Menu, and at 600px and below only the logo and Menu. The footer is the page's own, with the address, the first phone number, the email address and the WhatsApp link from `content/site.ts`, and a back-to-top button. The page reuses `WhatsAppButton`.
+
+**Content.** All text is in `content/home.ts`. It follows the wording of the approved design and says what the original home page said: the products, Mubarikpur in Punjab, since 1990, custom and OEM work, supply across India. The Moulding Boxes card and list entry lead to the Moulding Boxes product page; the other products and the industries lead to `/products`, and the featured guide to the moulding box article. The original page's ticker, strength cards and industry cards are gone with it.
+
+**Photos and film.** The photos in `app/assets/home/` are placeholders, cut from the approved design's screenshots and cleaned of the text printed over them. To use a real photo, replace the file of the same name; the layout crops each photo to its frame. Setting `homeHero.video` to the address of a muted film plays it in the hero instead of the photo and shows the "Factory film" control that pauses it.
+
+**Design.**
+
+- The theme values are prefixed `landing-` (see [Styling](#styling)). Sizes follow the window: at 1265px, the width of the approved screenshots, they match the design. On narrower windows the sections stack, at 900, 768 or 600px depending on the section.
+- The fonts are Gelasio and Arimo, the product pages' serif and sans, loaded through the route's `links` from the same Google Fonts address.
+- The drawing in the custom manufacturing section is an SVG (`CustomSection.tsx`), not a picture, so it stays sharp at every size.
+- No animation was added. The back-to-top button scrolls smoothly unless the visitor asks for reduced motion.
+
 ## Content
 
 - `content/site.ts` is the single source for the company name, address, phone numbers, email address, WhatsApp link and external addresses. Components never hard-code these.
-- `content/navigation.ts` holds the nav, mobile menu, footer and ticker lists.
+- `content/navigation.ts` holds the nav, mobile menu and footer lists. The home page's own menu and footer lists are in `content/home.ts`.
 - `content/icons.ts` holds the icon paths.
 - One file per page holds that page's repeated items (cards, timeline entries, form options).
 - `content/blog/` holds one MDX file per article. Adding a file there adds a page at `/blog/<file name>`.
@@ -195,7 +216,6 @@ Text copied with its apparent typos:
 | Text | Where |
 |---|---|
 | "Fl belt and troughed conveyor systems" | `content/products.ts` |
-| "MS.Alloy steel" in the hero, "MS·Alloy steel" further down | `content/home.ts` |
 | "Knock-out machine,Sand coolers" | `content/about.ts` |
 
 ## SEO and addresses
@@ -228,7 +248,7 @@ The comparisons cover eight pages at 15 widths from 360 to 2560px, scrolled view
 
 The suite is not in this repository. It needs a copy of the original site beside the project and holds a large recording of it, so it lives in a `tests/` folder on the developer's machine, which git ignores. It stays useful only while the site is meant to match the original; once the design starts to change, it is retired.
 
-Since the product pages, the products page differs from the original on purpose: the Moulding Boxes card leads to its page and four cards were added. The suite reports these differences. Every other page was checked on 2026-11-02 by comparing screenshots with the build before the change, at 1440 and 390px: all are identical pixel for pixel.
+Since the product pages, the products page differs from the original on purpose: the Moulding Boxes card leads to its page and four cards were added. Since the new home page, the home page differs too. The suite reports these differences. After each of the two changes, every other page was checked on 2026-11-02 by comparing screenshots with the build before the change, at 1440 and 390px: all are identical pixel for pixel, the product pages included after the home page change.
 
 ## Commands
 
@@ -270,6 +290,6 @@ So every push to `main` that passes the checks goes live within a few minutes. I
 2. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
 3. **Node version:** Node 22.22 or later is needed before moving to React Router 8. The deploy workflow uses the latest Node 22.
 4. **Page views in Google Analytics:** confirm after the first deploy that moving between pages records page views (see [Forms and analytics](#forms-and-analytics)).
-5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)).
+5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)). The home page photos are placeholders taken from its approved design, and the factory film is still to come (see [Home page](#home-page)).
 6. **Drawing uploads:** the product page form asks for drawings by WhatsApp or email. Uploading them needs the Google Apps Script to accept files.
 7. **Workbook questions:** bush hardness is 58–62 HRC in the Bushes specifications but 58–60 HRC in its FAQ and on the Moulding Boxes page; the pallet car bearing make "NGC" may mean NBC. The pages show both as written.
