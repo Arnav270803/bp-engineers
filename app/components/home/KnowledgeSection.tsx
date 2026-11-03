@@ -1,5 +1,5 @@
 import { homeKnowledge } from "~/content/home";
-import { Eyebrow, TitleText, UnderlineLink } from "./parts";
+import { Eyebrow, TitleText, UnderlineLink } from "~/components/site/parts";
 
 /** "05 / Knowledge from the floor": the featured guide. */
 export function KnowledgeSection() {

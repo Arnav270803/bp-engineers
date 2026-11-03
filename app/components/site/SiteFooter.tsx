@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { AppLink } from "~/components/ui/AppLink";
-import { homeFooter, homeHeader } from "~/content/home";
+import { siteFooter, siteHeader } from "~/content/navigation";
 import { site } from "~/content/site";
-import { HomeLogo } from "./HomeHeader";
+import { SiteLogo } from "./SiteHeader";
 import { ArrowUpRight } from "./parts";
 
 const heading =
@@ -16,17 +16,17 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 }
 
-/** The home page's footer: logo, links, address, contact and the closing line. */
-export function HomeFooter() {
+/** The footer of every page: logo, links, address, contact and the closing line. */
+export function SiteFooter() {
   return (
     <footer className="bg-landing-dark-deep px-landing-gutter pt-8 pb-5.5 text-landing-on-dark">
       <div className="grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.28fr)_minmax(0,1.3fr)] gap-x-8 gap-y-10 upto-900:grid-cols-[repeat(2,minmax(0,1fr))] upto-600:grid-cols-[minmax(0,1fr)]">
         <div>
-          <AppLink to="/" aria-label={homeHeader.homeLink}>
-            <HomeLogo lineClass="text-landing-on-dark-sign" />
+          <AppLink to="/" aria-label={siteHeader.homeLink}>
+            <SiteLogo lineClass="text-landing-on-dark-sign" />
           </AppLink>
           <p className="mt-6 font-landing-sans text-12 leading-[20px] text-landing-on-dark-sign">
-            {homeFooter.tagline.map((line, index) => (
+            {siteFooter.tagline.map((line, index) => (
               <Fragment key={line}>
                 {index > 0 && <br />}
                 {line}
@@ -35,15 +35,15 @@ export function HomeFooter() {
           </p>
         </div>
         <div>
-          <h2 className={heading}>{homeFooter.explore.heading}</h2>
-          {homeFooter.explore.links.map((link) => (
+          <h2 className={heading}>{siteFooter.explore.heading}</h2>
+          {siteFooter.explore.links.map((link) => (
             <AppLink key={link.to} to={link.to} className={item}>
               {link.label}
             </AppLink>
           ))}
         </div>
         <div>
-          <h2 className={heading}>{homeFooter.visit.heading}</h2>
+          <h2 className={heading}>{siteFooter.visit.heading}</h2>
           <p className="font-landing-sans text-12 leading-[20px] text-landing-on-dark-muted">
             {site.address.street}
             <br />
@@ -55,12 +55,12 @@ export function HomeFooter() {
             rel="noopener"
             className={`mt-3 flex items-center gap-1.5 ${item}`}
           >
-            {homeFooter.visit.map}
+            {siteFooter.visit.map}
             <ArrowUpRight className="h-2.5 w-2.5" />
           </a>
         </div>
         <div>
-          <h2 className={heading}>{homeFooter.talk.heading}</h2>
+          <h2 className={heading}>{siteFooter.talk.heading}</h2>
           <a href={site.phones[0].href} className={item}>
             {site.phones[0].label}
           </a>
@@ -73,25 +73,25 @@ export function HomeFooter() {
             rel="noopener"
             className={`flex items-center gap-1.5 ${item}`}
           >
-            {homeFooter.talk.whatsapp}
+            {siteFooter.talk.whatsapp}
             <ArrowUpRight className="h-2.5 w-2.5" />
           </a>
         </div>
       </div>
 
       <p className="mt-12 font-landing-sans text-landing-sign leading-[0.9] tracking-headline text-landing-on-dark-sign uppercase">
-        {homeFooter.sign}
+        {siteFooter.sign}
       </p>
 
       <div className="mt-9 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 border-t border-t-landing-on-dark-line pt-5.5 text-landing-on-dark-muted upto-600:grid-cols-[minmax(0,1fr)]">
-        <span className={small}>{homeFooter.copyright}</span>
-        <span className={small}>{homeFooter.motto}</span>
+        <span className={small}>{siteFooter.copyright}</span>
+        <span className={small}>{siteFooter.motto}</span>
         <button
           type="button"
           onClick={scrollToTop}
           className={`cursor-pointer justify-self-end border-0 bg-transparent text-landing-on-dark-muted hover:text-landing-on-dark upto-600:justify-self-start ${small}`}
         >
-          {`${homeFooter.backToTop} ↑`}
+          {`${siteFooter.backToTop} ↑`}
         </button>
       </div>
     </footer>

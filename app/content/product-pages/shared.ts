@@ -26,6 +26,20 @@ export const conveyorRollers: OtherProduct = {
 };
 
 /** The words used on every product page. */
+// The footer's introduction, company links and copyright line. They are the
+// words the site's earlier footer used, kept as they were for these pages.
+export const productPageFooterText = {
+  intro:
+    "Manufacturers of sand casting foundry equipment since 1990. Moulding boxes, pouring ladles, conveyor systems and sand handling equipment — built in Punjab for foundries across India.",
+  companyLinks: [
+    { label: "About Us", to: "/about" },
+    { label: "Knowledge Base", to: "/blog" },
+    { label: "Get a Quote", to: "/quote" },
+    { label: "Contact", to: "/contact" },
+  ],
+  copyright: "© 2025 B.P. Engineers. All rights reserved. · Est. 1990 · Mubarikpur, Punjab",
+};
+
 export const productPageText = keepTogether({
   homeLink: "B.P. Engineers home page",
   logoSince: "Since 1990",

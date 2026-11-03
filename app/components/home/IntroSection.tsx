@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { AppLink } from "~/components/ui/AppLink";
 import { homeEquipment, homeIntro } from "~/content/home";
-import { ArrowUpRight, Eyebrow, sectionTitle } from "./parts";
+import { ArrowUpRight, Eyebrow, sectionTitle } from "~/components/site/parts";
 
 /** "Strength in every detail": the four products as a list of links. */
 export function IntroSection() {

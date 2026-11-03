@@ -1,58 +1,56 @@
+import { ArrowUpRight } from "~/components/site/parts";
 import { AppLink } from "~/components/ui/AppLink";
-import { Icon } from "~/components/ui/Icon";
 import { productQuoteLink, type Product } from "~/content/products";
 import { cx } from "~/lib/cx";
 
 // A card with a product page is a link: its title's link is stretched over the
 // whole card, and the quote link is raised above it so it still works.
-export function ProductCard({ number, icon, title, text, specs, tag, page }: Product) {
+export function ProductCard({ number, title, text, specs, tag, page }: Product) {
   return (
-    <div className="group relative overflow-hidden bg-surface px-7 py-9 transition-[background] duration-250 before:absolute before:top-0 before:left-0 before:h-0 before:w-0.75 before:bg-brand before:transition-[height] before:duration-250 before:content-[''] hover:bg-surface-inverse hover:before:h-full">
-      <div className="absolute top-2 right-3.5 font-display text-60 leading-[1] font-bold text-[#f0f2f5] transition-[color] duration-250 group-hover:text-[rgba(255,255,255,0.05)]">
-        {number}
+    <article className="group relative flex flex-col border-t border-t-landing-line-strong pt-6">
+      <div className="flex items-start justify-between gap-4 font-landing-sans text-9 leading-[1.4] uppercase">
+        <span className="text-landing-ink-muted">{number}</span>
+        <span className="text-right tracking-caps-wide text-landing-emphasis">{tag}</span>
       </div>
-      <div className="mb-5 flex h-11 w-11 items-center justify-center bg-brand">
-        <Icon name={icon} className="h-5 w-5 fill-ink-inverse" />
-      </div>
-      <div className="mb-2.5 font-display text-21 leading-[1.2] font-bold text-ink-strong uppercase transition-[color] duration-250 group-hover:text-ink-inverse">
+      <h3 className="mt-6 font-landing-sans text-22 leading-[1.15] font-normal tracking-[-0.01em]">
         {page ? (
-          <AppLink to={page} className="after:absolute after:inset-0 after:content-['']">
+          <AppLink
+            to={page}
+            className="inline-flex items-center gap-2.5 group-hover:text-landing-emphasis after:absolute after:inset-0 after:content-['']"
+          >
             {title}
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </AppLink>
         ) : (
           title
         )}
-      </div>
-      <div className="mb-4 text-13 leading-[1.7] text-ink-muted transition-[color] duration-250 group-hover:text-ink-inverse-muted">
-        {text}
-      </div>
-      <ul className="mb-4 list-none">
+      </h3>
+      <p className="mt-3 font-landing-sans text-13 leading-[21px] text-landing-ink-muted">{text}</p>
+      <dl className="mt-6 border-b border-b-landing-line">
         {specs.map((spec) => (
-          <li
+          <div
             key={spec.label}
-            className="flex gap-2 border-b border-b-[rgba(0,0,0,0.05)] py-1 text-12 text-ink transition-[color] duration-250 group-hover:text-ink-inverse"
+            className="flex gap-4 border-t border-t-landing-line py-2.5 font-landing-sans text-12 leading-[1.4]"
           >
-            <span className="min-w-20 font-medium text-ink-muted transition-[color] duration-250 group-hover:text-ink-inverse-muted">
+            <dt className="w-22 shrink-0 text-9 leading-[1.9] tracking-caps-wide text-landing-ink-muted uppercase">
               {spec.label}
-            </span>
-            {spec.value}
-          </li>
+            </dt>
+            <dd>{spec.value}</dd>
+          </div>
         ))}
-      </ul>
-      <div className="inline-block bg-surface-muted px-2.5 py-1 text-10 font-semibold tracking-sm text-ink-muted uppercase transition-all duration-250 group-hover:bg-[rgba(240,125,26,0.15)] group-hover:text-brand-soft">
-        {tag}
-      </div>
-      <div className="mt-4">
+      </dl>
+      <div className="mt-auto pt-6">
         <AppLink
           to={productQuoteLink.to}
           className={cx(
-            "font-display text-13 font-semibold tracking-xs text-brand uppercase transition-[color] duration-200 group-hover:text-brand-soft",
+            "inline-flex items-center gap-2.5 border-b border-b-landing-line-strong pb-2 font-landing-sans text-12 leading-[1] text-landing-ink hover:border-b-landing-ink",
             page && "relative z-1",
           )}
         >
           {productQuoteLink.label}
+          <ArrowUpRight className="h-3 w-3" />
         </AppLink>
       </div>
-    </div>
+    </article>
   );
 }

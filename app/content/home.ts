@@ -12,38 +12,12 @@ import mouldingBoxes from "~/assets/home/moulding-boxes.jpg";
 import pouringLadles from "~/assets/home/pouring-ladles.jpg";
 import workshop from "~/assets/home/workshop.jpg";
 import { productPagePath } from "./product-pages";
-
-/** Words before the accent, each entry on its own line; the accent ends the title on a new line. */
-export interface HomeTitle {
-  lines: string[];
-  accent: string;
-}
+import type { SectionTitle } from "./titles";
 
 export const homeMeta = {
   title: "B.P. Engineers — Foundry Equipment Manufacturers Since 1990",
   description:
     "B.P. Engineers manufactures sand casting foundry equipment — moulding boxes, pouring ladles, conveyor systems and sand handling equipment. Mubarikpur, Punjab, India since 1990.",
-};
-
-export const homeHeader = {
-  logoLine: "Engineers",
-  homeLink: "B.P. Engineers home page",
-  products: { label: "Products", to: "/products" },
-  quote: { label: "Get a quote", to: "/quote" },
-  menu: "Menu",
-  close: "Close",
-};
-
-export const homeMenu = {
-  label: "Menu",
-  links: [
-    { label: "Home", to: "/" },
-    { label: "Products", to: "/products" },
-    { label: "About us", to: "/about" },
-    { label: "Knowledge", to: "/blog" },
-    { label: "Contact", to: "/contact" },
-    { label: "Get a quote", to: "/quote" },
-  ],
 };
 
 export const homeHero = {
@@ -72,7 +46,7 @@ export const homeIntro = {
 
 export const homeEquipment = {
   eyebrow: "01 / The equipment",
-  title: { lines: ["Built to work."], accent: "Made to last." } satisfies HomeTitle,
+  title: { lines: ["Built to work."], accent: "Made to last." } satisfies SectionTitle,
   intro: ["From the moulding floor to sand handling.", "Explore the equipment behind your next pour."],
   action: { label: "View the complete range", to: "/products" },
   items: [
@@ -142,7 +116,7 @@ export const homeProcess = {
 
 export const homeCustom = {
   eyebrow: "03 / Custom manufacturing",
-  title: { lines: ["Your drawings."], accent: "Our expertise." } satisfies HomeTitle,
+  title: { lines: ["Your drawings."], accent: "Our expertise." } satisfies SectionTitle,
   lines: [
     "A different size. A specific capacity. A new layout.",
     "We build around the requirements of your foundry.",
@@ -161,7 +135,7 @@ export const homeCustom = {
 
 export const homeIndustries = {
   eyebrow: "04 / Where our equipment works",
-  title: { lines: ["Built for the"], accent: "way you work." } satisfies HomeTitle,
+  title: { lines: ["Built for the"], accent: "way you work." } satisfies SectionTitle,
   text: "Supporting the foundries behind everyday machines and essential industries.",
   items: [
     { name: "Sand casting foundries", detail: "Green sand · No-bake · Shell" },
@@ -175,7 +149,7 @@ export const homeIndustries = {
 
 export const homeKnowledge = {
   eyebrow: "05 / Knowledge from the floor",
-  title: { lines: ["Experience,"], accent: "shared." } satisfies HomeTitle,
+  title: { lines: ["Experience,"], accent: "shared." } satisfies SectionTitle,
   action: { label: "Explore the knowledge base", to: "/blog" },
   featured: {
     label: "Featured guide",
@@ -185,35 +159,4 @@ export const homeKnowledge = {
     action: { label: "Read the complete guide", to: "/blog/moulding-box-guide" },
     image: guideImage,
   },
-};
-
-export const homeCta = {
-  eyebrow: "Your next build starts here",
-  title: { lines: ["Let’s make"], accent: "it work." } satisfies HomeTitle,
-  lines: [
-    "Tell us what your foundry needs.",
-    "Share your drawings, dimensions or quantities.",
-    "We’ll help you take the next step.",
-  ],
-  action: { label: "Get a quote", to: "/quote" },
-  callPrefix: "Or call ",
-};
-
-export const homeFooter = {
-  tagline: ["Foundry equipment.", "Made in Punjab. Since 1990."],
-  explore: {
-    heading: "Explore",
-    links: [
-      { label: "Our products", to: "/products" },
-      { label: "Our company", to: "/about" },
-      { label: "Knowledge", to: "/blog" },
-      { label: "Get a quote", to: "/quote" },
-    ],
-  },
-  visit: { heading: "Visit us", map: "Find our workshop" },
-  talk: { heading: "Let’s talk", whatsapp: "WhatsApp" },
-  sign: "Built to endure.",
-  copyright: "© 2026 B.P. Engineers",
-  motto: "Strength. Precision. Reliability.",
-  backToTop: "Back to top",
 };

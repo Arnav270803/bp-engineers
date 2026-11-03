@@ -1,5 +1,6 @@
-// Text of the quote page, copied verbatim from the original.
-import type { PageHeroContent } from "~/components/layout/PageHero";
+// Text of the quote page. The words are the original's; titles and labels are
+// in sentence case, as the site's design writes them.
+import type { PageHeroContent } from "~/components/site/PageHero";
 
 export const quoteMeta = {
   title: "Get a Quote — B.P. Engineers | Foundry Equipment",
@@ -10,14 +11,14 @@ export const quoteMeta = {
 export const quoteHero: PageHeroContent = {
   eyebrow: "Free · No Obligation · 24 Hour Response",
   titleBefore: "Request a ",
-  titleAccent: "Free Quote",
+  titleAccent: "free quote",
   lead: "Tell us your requirements — product type, dimensions, quantity, material. We'll respond with a competitive quote within 24 hours on working days.",
 };
 
 export const quoteSidebar = {
-  contactTitle: "Contact Us Directly",
+  contactTitle: "Contact us directly",
   labels: { whatsapp: "WhatsApp", phone: "Phone", email: "Email" },
-  promiseTitle: "Our Promise",
+  promiseTitle: "Our promise",
   promises: [
     "Free quote — no obligation",
     "Response within 24 hours",
@@ -30,9 +31,9 @@ export const quoteSidebar = {
 
 export const quoteForm = {
   sections: {
-    details: "Your Details",
-    requirements: "Product Requirements",
-    additional: "Additional Details",
+    details: "Your details",
+    requirements: "Product requirements",
+    additional: "Additional details",
   },
   categoryPrompt: "Select category",
   categories: [
@@ -66,7 +67,7 @@ export const quoteForm = {
   noteLead: "Free quote — no obligation.",
   noteRest:
     " We will review your requirements and respond within 24 hours on working days with pricing and availability.",
-  submit: "Submit Quote Request →",
+  submit: "Submit quote request",
   sending: "Sending...",
   submitted: "Submitted ✓",
   // Each message is written in parts around its links. A part must stay one

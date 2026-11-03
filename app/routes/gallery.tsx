@@ -2,8 +2,7 @@ import type { Route } from "./+types/gallery";
 import { GalleryFilter } from "~/components/gallery/GalleryFilter";
 import { GalleryItem } from "~/components/gallery/GalleryItem";
 import { PhotosComingSoon } from "~/components/gallery/PhotosComingSoon";
-import { PageHero } from "~/components/layout/PageHero";
-import { Section } from "~/components/ui/Section";
+import { PageHero } from "~/components/site/PageHero";
 import { galleryHero, galleryMeta, galleryTiles } from "~/content/gallery";
 
 export const meta: Route.MetaFunction = () => [
@@ -15,15 +14,15 @@ export default function Gallery() {
   return (
     <>
       <PageHero {...galleryHero} />
-      <Section>
+      <section className="bg-landing-surface px-landing-gutter pt-14 pb-20 text-landing-ink">
         <GalleryFilter />
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-0.5 bg-line">
-          {galleryTiles.map((tile) => (
-            <GalleryItem key={tile.name} {...tile} />
+        <div className="mt-10 grid grid-cols-[repeat(3,minmax(0,1fr))] gap-x-7.5 gap-y-10 upto-900:grid-cols-[repeat(2,minmax(0,1fr))] upto-600:grid-cols-[minmax(0,1fr)]">
+          {galleryTiles.map((tile, index) => (
+            <GalleryItem key={tile.title} {...tile} number={`${String(index + 1).padStart(2, "0")} / BP`} />
           ))}
         </div>
-        <PhotosComingSoon />
-      </Section>
+      </section>
+      <PhotosComingSoon />
     </>
   );
 }

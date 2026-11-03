@@ -1,4 +1,5 @@
 import { useRef, useState, type ReactNode } from "react";
+import { ArrowUpRight, pillClasses } from "~/components/site/parts";
 import { FormField, fieldControl, fieldTextarea } from "~/components/ui/FormField";
 import { quoteForm } from "~/content/quote";
 import { site } from "~/content/site";
@@ -7,18 +8,19 @@ import { useFieldsRestoredOnReturn } from "~/lib/form-memory";
 import { QUOTE_FIELDS, buildQuotePayload, readFields, sendEnquiry } from "~/lib/forms";
 
 const control = fieldControl.light;
-const rowOfTwo = "grid grid-cols-[1fr_1fr] gap-4 upto-900:grid-cols-[1fr]";
-const rowOfThree = "grid grid-cols-[1fr_1fr_1fr] gap-4 upto-900:grid-cols-[1fr]";
+const rowOfTwo = "grid grid-cols-[1fr_1fr] gap-x-4 upto-900:grid-cols-[1fr]";
+const rowOfThree = "grid grid-cols-[1fr_1fr_1fr] gap-x-4 upto-900:grid-cols-[1fr]";
 
-const messageBox = "max-w-80 rounded-[2px] px-4 py-2.5 text-right text-13 leading-[1.6]";
-const messageSuccess = "block border border-brand bg-[rgba(240,125,26,0.1)] text-ink-strong";
-const messageFailure = "block border border-danger bg-[rgba(255,50,50,0.08)] text-ink-strong";
+const messageBox = "max-w-80 px-4 py-3 text-right font-landing-sans text-13 leading-[1.6]";
+const messageSuccess = "block border border-landing-action bg-[rgba(227,153,80,0.12)] text-landing-ink";
+const messageFailure = "block border border-danger bg-[rgba(255,85,85,0.08)] text-landing-ink";
 
-function FormSection({ title, children }: { title: string; children: ReactNode }) {
+function FormSection({ number, title, children }: { number: string; title: string; children: ReactNode }) {
   return (
-    <div className="mb-9 border-b border-b-line pb-9 last:mb-0 last:pb-0 last:[border-bottom:none]">
-      <div className="mb-5 flex items-center gap-2.5 font-display text-16 font-bold tracking-xs text-ink-strong uppercase before:h-4.5 before:w-0.75 before:bg-brand before:content-['']">
-        {title}
+    <div className="mb-10 border-b border-b-landing-line pb-8 last:mb-0 last:border-b-0 last:pb-0">
+      <div className="mb-7 flex items-baseline gap-4">
+        <span className="font-landing-sans text-9 leading-[1] text-landing-ink-muted">{number}</span>
+        <h2 className="font-landing-serif text-26 leading-[1.15] font-normal tracking-[-0.015em]">{title}</h2>
       </div>
       {children}
     </div>
@@ -74,9 +76,9 @@ export function QuoteForm() {
 
   return (
     <div>
-      <div className="border-[0.5px] border-line bg-surface p-12 upto-900:px-5.5 upto-900:py-7">
+      <div className="bg-landing-surface-light px-12 pt-11 pb-10 upto-900:px-5.5 upto-900:pt-8 upto-900:pb-7">
         <form id="quoteForm" ref={formRef}>
-          <FormSection title={quoteForm.sections.details}>
+          <FormSection number="01" title={quoteForm.sections.details}>
             <div className={rowOfTwo}>
               <FormField tone="light" label="Full Name *">
                 <input type="text" name="name" placeholder="Your full name" required className={control} />
@@ -109,7 +111,7 @@ export function QuoteForm() {
             </div>
           </FormSection>
 
-          <FormSection title={quoteForm.sections.requirements}>
+          <FormSection number="02" title={quoteForm.sections.requirements}>
             <div className={rowOfTwo}>
               <FormField tone="light" label="Product Category *">
                 <select name="product_category" required className={control}>
@@ -145,7 +147,7 @@ export function QuoteForm() {
             </div>
           </FormSection>
 
-          <FormSection title={quoteForm.sections.additional}>
+          <FormSection number="03" title={quoteForm.sections.additional}>
             <FormField tone="light" label="Specifications & Requirements">
               <textarea
                 name="specifications"
@@ -162,9 +164,9 @@ export function QuoteForm() {
         </form>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-5 bg-surface-muted px-12 py-7 upto-900:p-5.5">
-        <div className="max-w-80 text-13 leading-[1.6] text-ink-muted">
-          <strong className="text-ink-strong">{quoteForm.noteLead}</strong>
+      <div className="flex flex-wrap items-center justify-between gap-5 bg-landing-surface-stone px-12 py-7 upto-900:p-5.5">
+        <div className="max-w-80 font-landing-sans text-13 leading-[1.6] text-landing-ink-muted">
+          <strong className="text-landing-ink">{quoteForm.noteLead}</strong>
           {quoteForm.noteRest}
         </div>
         <div className="flex flex-col items-end gap-2.5">
@@ -186,7 +188,7 @@ export function QuoteForm() {
                 <br />
                 <small>
                   {quoteForm.success.beforeLink}
-                  <a href={site.whatsapp.href} className="text-brand">
+                  <a href={site.whatsapp.href} className="text-landing-emphasis-warm">
                     {quoteForm.success.link}
                   </a>
                   {quoteForm.success.afterLink}
@@ -196,11 +198,11 @@ export function QuoteForm() {
             {outcome === "failure" && (
               <>
                 {quoteForm.failure.beforeWhatsapp}
-                <a href={site.whatsapp.href} className="text-brand">
+                <a href={site.whatsapp.href} className="text-landing-emphasis-warm">
                   {quoteForm.failure.whatsapp}
                 </a>
                 {quoteForm.failure.beforeEmail}
-                <a href={site.email.href} className="text-brand">
+                <a href={site.email.href} className="text-landing-emphasis-warm">
                   {site.email.label}
                 </a>
                 {quoteForm.failure.afterEmail}
@@ -212,9 +214,13 @@ export function QuoteForm() {
             id="quoteSubmitBtn"
             disabled={disabled}
             onClick={handleSubmit}
-            className="cursor-pointer bg-brand px-12 py-4 font-display text-16 font-bold tracking-md whitespace-nowrap text-ink-inverse uppercase transition-[background] duration-200 [border:none] hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-70"
+            className={pillClasses(
+              "action",
+              "cursor-pointer border-0 whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-70",
+            )}
           >
-            {buttonLabel}
+            <span>{buttonLabel}</span>
+            <ArrowUpRight />
           </button>
         </div>
       </div>

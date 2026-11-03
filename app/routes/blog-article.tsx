@@ -3,8 +3,8 @@ import type { Route } from "./+types/blog-article";
 import { ArticleSidebar } from "~/components/blog/ArticleSidebar";
 import { articleElements } from "~/components/blog/article-elements";
 import { NotFound } from "~/components/layout/NotFound";
-import { PageHero } from "~/components/layout/PageHero";
-import { Section } from "~/components/ui/Section";
+import { ClosingCta } from "~/components/site/ClosingCta";
+import { PageHero } from "~/components/site/PageHero";
 import type { ArticleFrontmatter } from "~/content/blog";
 
 interface ArticleModule {
@@ -36,28 +36,27 @@ export default function BlogArticle({ params }: Route.ComponentProps) {
   return (
     <>
       <PageHero {...frontmatter.hero} />
-      <Section>
-        <div className="grid grid-cols-[1fr_300px] [align-items:start] gap-15 upto-900:grid-cols-[1fr]">
-          <article>
-            <div className="mb-8 flex flex-wrap items-center gap-5 border-b border-b-line pb-7">
-              <span className="bg-brand px-3 py-1 text-11 font-semibold tracking-sm text-ink-inverse uppercase">
-                {frontmatter.category}
+      <section className="grid grid-cols-[minmax(0,1fr)_300px] items-start gap-x-20 gap-y-14 bg-landing-surface px-landing-gutter pt-14 pb-20 text-landing-ink upto-900:grid-cols-[minmax(0,1fr)]">
+        <article className="max-w-180">
+          <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-b-landing-line pb-7 font-landing-sans text-9 leading-[1.4] tracking-caps-wide uppercase">
+            <span className="rounded-full bg-landing-dark px-3 py-1.5 font-bold text-landing-on-dark">
+              {frontmatter.category}
+            </span>
+            {frontmatter.byline.map((line) => (
+              <span key={line} className="text-landing-ink-muted">
+                {line}
               </span>
-              {frontmatter.byline.map((line) => (
-                <span key={line} className="text-13 text-ink-muted">
-                  {line}
-                </span>
-              ))}
-            </div>
-            <Content components={articleElements} />
-          </article>
-          <ArticleSidebar
-            sidebar={frontmatter.sidebar}
-            relatedHeading={frontmatter.relatedHeading}
-            related={frontmatter.related}
-          />
-        </div>
-      </Section>
+            ))}
+          </div>
+          <Content components={articleElements} />
+        </article>
+        <ArticleSidebar
+          sidebar={frontmatter.sidebar}
+          relatedHeading={frontmatter.relatedHeading}
+          related={frontmatter.related}
+        />
+      </section>
+      <ClosingCta />
     </>
   );
 }

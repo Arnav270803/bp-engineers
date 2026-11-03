@@ -1,4 +1,5 @@
 import { useRef, useState, type FormEvent } from "react";
+import { ArrowUpRight, pillClasses } from "~/components/site/parts";
 import { FormField, fieldControl, fieldSelect, fieldTextarea } from "~/components/ui/FormField";
 import { contactForm } from "~/content/contact";
 import { site } from "~/content/site";
@@ -6,15 +7,15 @@ import { cx } from "~/lib/cx";
 import { useFieldsRestoredOnReturn } from "~/lib/form-memory";
 import { CONTACT_FIELDS, buildContactPayload, readFields, sendEnquiry } from "~/lib/forms";
 
-const row = "mb-3.5 grid grid-cols-[1fr_1fr] gap-3.5 upto-860:grid-cols-[1fr]";
+const row = "grid grid-cols-[1fr_1fr] gap-x-4 upto-860:grid-cols-[1fr]";
 const control = fieldControl.dark;
 
-const messageBox = "mb-3 rounded-[2px] p-3 text-14 leading-[1.6]";
-const messageSuccess = "block border border-brand bg-[rgba(240,125,26,0.1)] text-ink-inverse";
-const messageFailure = "block border border-danger bg-[rgba(255,50,50,0.1)] text-ink-inverse";
+const messageBox = "mb-4 p-4 font-landing-sans text-13 leading-[1.6]";
+const messageSuccess = "block border border-landing-action bg-[rgba(227,153,80,0.12)] text-landing-on-dark";
+const messageFailure = "block border border-danger bg-[rgba(255,85,85,0.1)] text-landing-on-dark";
 
 /**
- * The enquiry form. It behaves exactly as the original does, including two
+ * The enquiry form. It behaves exactly as the original's did, including two
  * quirks: after a successful submission the button stays disabled and keeps
  * reading "Sending...", and after a failed one it shows the arrow's character
  * code as raw text. See ARCHITECTURE.md, "Kept from the original on purpose".
@@ -45,11 +46,13 @@ export function ContactForm() {
   }
 
   return (
-    <div className="bg-surface-inverse p-11 upto-860:px-5.5 upto-860:py-7">
-      <div className="mb-2 font-display text-22 font-bold tracking-xs text-ink-inverse uppercase">
+    <div className="bg-landing-dark px-11 pt-11 pb-10 text-landing-on-dark upto-860:px-5.5 upto-860:pt-8 upto-860:pb-7">
+      <h2 className="font-landing-serif text-landing-subtitle leading-[1.1] font-normal tracking-[-0.015em]">
         {contactForm.title}
-      </div>
-      <div className="mb-7 text-14 text-ink-inverse-muted">{contactForm.sub}</div>
+      </h2>
+      <p className="mt-3 mb-8 font-landing-sans text-13 leading-[1.6] text-landing-on-dark-soft">
+        {contactForm.sub}
+      </p>
       <form id="contactForm" ref={formRef} onSubmit={handleSubmit}>
         <div className={row}>
           <FormField tone="dark" label="Your Name">
@@ -97,7 +100,7 @@ export function ContactForm() {
               <br />
               <small>
                 {contactForm.success.beforeLink}
-                <a href={site.whatsapp.href} className="text-brand">
+                <a href={site.whatsapp.href} className="text-landing-action">
                   {contactForm.success.link}
                 </a>
                 {contactForm.success.afterLink}
@@ -107,11 +110,11 @@ export function ContactForm() {
           {outcome === "failure" && (
             <>
               {contactForm.failure.beforeWhatsapp}
-              <a href={site.whatsapp.href} className="text-brand">
+              <a href={site.whatsapp.href} className="text-landing-action">
                 {contactForm.failure.whatsapp}
               </a>
               {contactForm.failure.beforeEmail}
-              <a href={site.email.href} className="text-brand">
+              <a href={site.email.href} className="text-landing-action">
                 {site.email.label}
               </a>
               {contactForm.failure.afterEmail}
@@ -121,9 +124,13 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={disabled}
-          className="mt-1 w-full cursor-pointer bg-brand p-3.75 font-display text-15 font-semibold tracking-md text-ink-inverse uppercase transition-[background] duration-200 [border:none] hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-70"
+          className={pillClasses(
+            "action",
+            "mt-2 w-full cursor-pointer border-0 disabled:cursor-not-allowed disabled:opacity-70",
+          )}
         >
-          {buttonLabel}
+          <span>{buttonLabel}</span>
+          <ArrowUpRight />
         </button>
       </form>
     </div>

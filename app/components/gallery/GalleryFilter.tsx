@@ -2,17 +2,17 @@ import { galleryFilters } from "~/content/gallery";
 import { cx } from "~/lib/cx";
 
 const filter =
-  "cursor-pointer border px-5 py-2 font-display text-12 font-semibold tracking-sm uppercase transition-all duration-200";
+  "h-10 cursor-pointer rounded-full border px-4.5 font-landing-sans text-11 leading-[1] font-bold whitespace-nowrap";
 const filterIdle =
-  "border-line bg-transparent text-ink-muted hover:border-brand hover:bg-brand hover:text-ink-inverse";
-const filterActive = "border-brand bg-brand text-ink-inverse";
+  "border-landing-line-strong bg-transparent text-landing-ink-muted hover:border-landing-ink hover:text-landing-ink";
+const filterActive = "border-landing-dark bg-landing-dark text-landing-on-dark";
 
-/** The row of category buttons. They have no behaviour, as in the original. */
+/** The row of category buttons. They have no behaviour, as on the original site. */
 export function GalleryFilter() {
   return (
-    <div className="mb-9 flex flex-wrap gap-2.5">
+    <div className="flex flex-wrap gap-2.5">
       {galleryFilters.map((name, index) => (
-        <button key={name} className={cx(filter, index === 0 ? filterActive : filterIdle)}>
+        <button key={name} type="button" className={cx(filter, index === 0 ? filterActive : filterIdle)}>
           {name}
         </button>
       ))}

@@ -1,23 +1,17 @@
-import { PageHero } from "~/components/layout/PageHero";
-import { Button } from "~/components/ui/Button";
-import { Section } from "~/components/ui/Section";
-import { site } from "~/content/site";
+import { PageHero } from "~/components/site/PageHero";
+import { PillLink } from "~/components/site/parts";
+import { notFoundText } from "~/content/not-found";
 
-/** Shown for an address that has no page. The original site had no such page of its own. */
+/** Shown for an address that has no page. */
 export function NotFound() {
   return (
     <>
-      <PageHero
-        eyebrow={site.name}
-        titleBefore="Page "
-        titleAccent="Not Found"
-        lead="The page you are looking for does not exist or has moved."
-      />
-      <Section>
-        <Button to="/" variant="ghost">
-          Back to Home
-        </Button>
-      </Section>
+      <PageHero {...notFoundText.hero} />
+      <section className="bg-landing-surface px-landing-gutter py-16">
+        <PillLink to={notFoundText.action.to} tone="dark">
+          {notFoundText.action.label}
+        </PillLink>
+      </section>
     </>
   );
 }

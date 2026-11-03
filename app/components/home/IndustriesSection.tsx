@@ -1,6 +1,6 @@
 import { AppLink } from "~/components/ui/AppLink";
 import { homeIndustries } from "~/content/home";
-import { ArrowUpRight, Eyebrow, TitleText, sectionTitle } from "./parts";
+import { ArrowUpRight, Eyebrow, TitleText, sectionTitle } from "~/components/site/parts";
 
 /** "04 / Where our equipment works": the industries served. */
 export function IndustriesSection() {

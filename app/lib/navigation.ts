@@ -5,19 +5,6 @@ import { NavigationType, useLocation, useNavigationType } from "react-router";
 
 const withoutTrailingSlash = (path: string) => (path.length > 1 ? path.replace(/\/+$/, "") : path);
 
-export type NavSection = "home" | "about" | "products" | "blog" | "contact";
-
-/** The nav link shown as active for an address, as the original marked it. */
-export function navSectionFor(pathname: string): NavSection | null {
-  const path = withoutTrailingSlash(pathname);
-  if (path === "/") return "home";
-  if (path === "/about") return "about";
-  if (path === "/products") return "products";
-  if (path === "/blog" || path.startsWith("/blog/")) return "blog";
-  if (path === "/contact") return "contact";
-  return null;
-}
-
 /** True when a link target is a `#` position on the page being viewed. */
 export function staysOnPage(target: string, currentPathname: string): boolean {
   const hashAt = target.indexOf("#");

@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import { AppLink } from "~/components/ui/AppLink";
-import { homeHeader, homeMenu } from "~/content/home";
+import { siteHeader, siteMenu } from "~/content/navigation";
 import { site } from "~/content/site";
+import { cx } from "~/lib/cx";
 import { PillLink } from "./parts";
 
-/** "B.P." over "ENGINEERS", as drawn on the home page. */
-export function HomeLogo({ lineClass = "text-landing-on-dark" }: { lineClass?: string }) {
+/** "B.P." over "ENGINEERS", as drawn in the site's design. */
+export function SiteLogo({ lineClass = "text-landing-on-dark" }: { lineClass?: string }) {
   return (
     <span className="flex flex-col items-start">
       <span className="font-landing-sans text-30 leading-[1] font-bold tracking-[0]">
@@ -14,7 +16,7 @@ export function HomeLogo({ lineClass = "text-landing-on-dark" }: { lineClass?: s
       <span
         className={`mt-4.5 font-landing-sans text-9 leading-[1] font-bold tracking-caps-wider uppercase ${lineClass}`}
       >
-        {homeHeader.logoLine}
+        {siteHeader.logoLine}
       </span>
     </span>
   );
@@ -48,8 +50,15 @@ function CloseIcon() {
   );
 }
 
+/** True when a menu link leads to the page being viewed, or to the section it belongs to. */
+function isCurrent(to: string, pathname: string): boolean {
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  return to === "/" ? path === "/" : path === to || path.startsWith(`${to}/`);
+}
+
 /** The menu over the whole window. It closes with its button or the Escape key. */
-function HomeMenu({ onClose }: { onClose: () => void }) {
+function SiteMenu({ onClose }: { onClose: () => void }) {
+  const { pathname } = useLocation();
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -62,31 +71,38 @@ function HomeMenu({ onClose }: { onClose: () => void }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={homeMenu.label}
+      aria-label={siteMenu.label}
       className="fixed inset-0 z-1000 flex flex-col overflow-y-auto bg-landing-dark px-landing-gutter pt-7.5 pb-10 text-landing-on-dark"
     >
       <div className="flex items-start justify-between">
-        <AppLink to="/" aria-label={homeHeader.homeLink}>
-          <HomeLogo lineClass="text-landing-on-dark-sign" />
+        <AppLink to="/" aria-label={siteHeader.homeLink}>
+          <SiteLogo lineClass="text-landing-on-dark-sign" />
         </AppLink>
         <button type="button" onClick={onClose} className={menuButton} autoFocus>
-          {homeHeader.close}
+          {siteHeader.close}
           <CloseIcon />
         </button>
       </div>
       <nav className="mt-auto pt-16">
-        {homeMenu.links.map((link, index) => (
-          <AppLink
-            key={link.to}
-            to={link.to}
-            className="flex items-baseline gap-6 border-b border-b-[rgba(238,239,230,0.14)] py-3.5 font-landing-serif text-landing-menu leading-[1.1] tracking-headline hover:text-landing-emphasis-on-dark"
-          >
-            <span className="w-7 shrink-0 font-landing-sans text-10 tracking-caps text-landing-on-dark-faint">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            {link.label}
-          </AppLink>
-        ))}
+        {siteMenu.links.map((link, index) => {
+          const current = isCurrent(link.to, pathname);
+          return (
+            <AppLink
+              key={link.to}
+              to={link.to}
+              aria-current={current ? "page" : undefined}
+              className={cx(
+                "flex items-baseline gap-6 border-b border-b-[rgba(238,239,230,0.14)] py-3.5 font-landing-serif text-landing-menu leading-[1.1] tracking-headline hover:text-landing-emphasis-on-dark",
+                current && "text-landing-emphasis-on-dark italic",
+              )}
+            >
+              <span className="w-7 shrink-0 font-landing-sans text-10 tracking-caps text-landing-on-dark-faint not-italic">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              {link.label}
+            </AppLink>
+          );
+        })}
       </nav>
       <div className="mt-10 flex flex-wrap gap-x-10 gap-y-3 font-landing-sans text-12 leading-[1.6] text-landing-on-dark-muted">
         <a href={site.phones[0].href} className="hover:text-landing-on-dark">
@@ -101,34 +117,34 @@ function HomeMenu({ onClose }: { onClose: () => void }) {
   );
 }
 
-/** The header laid over the top of the hero: logo, products, the quote button and the menu. */
-export function HomeHeader() {
+/** The header laid over the dark top of every page: logo, products, the quote button and the menu. */
+export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-20 flex items-start justify-between px-landing-gutter pt-7.5 text-landing-on-dark">
-        <AppLink to="/" aria-label={homeHeader.homeLink}>
-          <HomeLogo />
+        <AppLink to="/" aria-label={siteHeader.homeLink}>
+          <SiteLogo />
         </AppLink>
         <div className="flex items-center gap-7.5 upto-600:gap-3">
           <AppLink
-            to={homeHeader.products.to}
+            to={siteHeader.products.to}
             className="font-landing-sans text-11 leading-[1] font-bold hover:text-landing-action-soft upto-768:hidden"
           >
-            {homeHeader.products.label}
+            {siteHeader.products.label}
           </AppLink>
-          <PillLink to={homeHeader.quote.to} tone="soft" className="upto-600:hidden">
-            {homeHeader.quote.label}
+          <PillLink to={siteHeader.quote.to} tone="soft" className="upto-600:hidden">
+            {siteHeader.quote.label}
           </PillLink>
           <button type="button" onClick={() => setOpen(true)} className={menuButton} aria-haspopup="dialog">
-            {homeHeader.menu}
+            {siteHeader.menu}
             <MenuIcon />
           </button>
         </div>
       </header>
-      {open && <HomeMenu onClose={close} />}
+      {open && <SiteMenu onClose={close} />}
     </>
   );
 }

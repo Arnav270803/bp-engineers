@@ -1,10 +1,11 @@
-// Text of the products page, copied verbatim from the original, including the
-// apparent typo "Fl belt" (see ARCHITECTURE.md). Casting equipment cards 05 to
-// 08 are new: they lead to the product pages, with text from the product page
-// workbook.
-import type { PageHeroContent } from "~/components/layout/PageHero";
-import type { IconName } from "./icons";
+// Text of the products page. The words are the original's, including the
+// apparent typo "Fl belt" (see ARCHITECTURE.md); titles and labels are in
+// sentence case, as the site's design writes them. Casting equipment cards 05
+// to 08 are new: they lead to the product pages, with text from the product
+// page workbook.
+import type { PageHeroContent } from "~/components/site/PageHero";
 import { productPagePath } from "./product-pages";
+import type { SectionTitle } from "./titles";
 
 export const productsMeta = {
   title: "Products — B.P. Engineers | Moulding Boxes, Ladles, Conveyors",
@@ -15,13 +16,12 @@ export const productsMeta = {
 export const productsHero: PageHeroContent = {
   eyebrow: "Complete Foundry Equipment Range",
   titleBefore: "Our ",
-  titleAccent: "Products",
+  titleAccent: "products",
   lead: "Precision-engineered foundry equipment for sand casting operations — moulding boxes, pouring ladles, sand handling systems, and fabrication services. Custom sizes and OEM manufacturing available.",
 };
 
 export interface Product {
   number: string;
-  icon: IconName;
   title: string;
   text: string;
   specs: Array<{ label: string; value: string }>;
@@ -45,7 +45,6 @@ export const productCategories: ProductCategory[] = [
     products: [
       {
         number: "01",
-        icon: "bars",
         title: "Moulding Boxes",
         text: "Heavy-duty MS moulding boxes (flasks) for green sand and no-bake casting. Precision-machined locating pins and bushings for accurate cope-and-drag alignment.",
         specs: [
@@ -59,7 +58,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "02",
-        icon: "clock",
         title: "Pouring Ladles",
         text: "Hand shank and crane-handled ladles for molten metal transfer. Fabricated MS body with refractory lining options. Available in multiple capacities.",
         specs: [
@@ -72,7 +70,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "03",
-        icon: "chart",
         title: "Flask & Frame Equipment",
         text: "Complete flask assemblies including cope, drag, and cheek sections with alignment hardware, guide bushings, and clamping systems.",
         specs: [
@@ -84,7 +81,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "04",
-        icon: "wrench",
         title: "Casting Accessories",
         text: "Complete range of foundry floor tools — chaplets, chills, rammers, vent rods, strike-off bars, core boxes, and more.",
         specs: [
@@ -95,7 +91,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "05",
-        icon: "car",
         title: "Pallet Cars",
         text: "Fabricated or cast iron pallet cars with SG iron or CI wheels and heavy-duty bearings, built for sand casting environments.",
         specs: [
@@ -109,7 +104,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "06",
-        icon: "ring",
         title: "Bushes",
         text: "Round and oval guide bushes in 20MnCr5 / AISI 8620, supplied as matched pairs for accurate cope and drag alignment.",
         specs: [
@@ -123,7 +117,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "07",
-        icon: "crosshair",
         title: "Matchplate & Moulding Pins",
         text: "Pins that locate the pattern plate and moulding box accurately during moulding, made to your drawing or sample.",
         specs: [
@@ -137,7 +130,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "08",
-        icon: "pin",
         title: "Closing Pins",
         text: "Closing pins hold the cope and drag aligned when the mould is closed. Made to your drawing or sample.",
         specs: [
@@ -157,7 +149,6 @@ export const productCategories: ProductCategory[] = [
     products: [
       {
         number: "01",
-        icon: "funnel",
         title: "Conveyor Belt Systems",
         text: "Fl belt and troughed conveyor systems for sand transport on the foundry floor. MS structural frames with adjustable speed drives.",
         specs: [
@@ -170,7 +161,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "02",
-        icon: "ring",
         title: "Conveyor Rollers",
         text: "Idler, drive, and return rollers manufactured from MS and GI tubing. Precision-machined bearing housings for smooth low-maintenance operation.",
         specs: [
@@ -183,7 +173,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "03",
-        icon: "gem",
         title: "Sand Hoppers & Bins",
         text: "Fabricated MS sand storage hoppers, feed bins, and discharge chutes for continuous sand reclamation and handling systems.",
         specs: [
@@ -195,7 +184,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "04",
-        icon: "list",
         title: "Sand Plant Structures",
         text: "Supporting MS frameworks, elevated platforms, walkways and enclosures for sand mixing and reclamation plants.",
         specs: [
@@ -213,7 +201,6 @@ export const productCategories: ProductCategory[] = [
     products: [
       {
         number: "01",
-        icon: "cube",
         title: "CNC Machining",
         text: "Precision CNC turning and VMC milling for foundry tooling, jigs, fixtures and component parts. Consistent quality across batch runs.",
         specs: [
@@ -225,7 +212,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "02",
-        icon: "square",
         title: "Sheet Metal Fabrication",
         text: "Cutting, bending and forming of MS and GI sheet components for guards, enclosures, covers and panels to your drawings.",
         specs: [
@@ -237,7 +223,6 @@ export const productCategories: ProductCategory[] = [
       },
       {
         number: "03",
-        icon: "leaf",
         title: "Welding & Structural",
         text: "MIG, TIG, and arc welding for heavy structural assemblies, machine bases, frames, and bespoke fabrications.",
         specs: [
@@ -251,10 +236,11 @@ export const productCategories: ProductCategory[] = [
   },
 ];
 
-export const productQuoteLink = { label: "Request Quote →", to: "/quote" };
+export const productQuoteLink = { label: "Request a quote", to: "/quote" };
 
 export const productsCta = {
-  title: "Need Custom Sizes or OEM Manufacturing?",
+  eyebrow: "Custom manufacturing",
+  title: { lines: ["Need custom sizes"], accent: "or OEM manufacturing?" } satisfies SectionTitle,
   text: "We manufacture to your drawings — any size, any quantity.",
-  action: { label: "Get a Quote →", to: "/quote" },
+  action: { label: "Get a quote", to: "/quote" },
 };

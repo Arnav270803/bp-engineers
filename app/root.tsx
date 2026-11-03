@@ -2,13 +2,13 @@ import { Fragment, useEffect, type ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts, isRouteErrorResponse, useMatches } from "react-router";
 import type { Route } from "./+types/root";
 import { AnimatedFavicon } from "~/components/layout/AnimatedFavicon";
-import { Footer } from "~/components/layout/Footer";
-import { Header } from "~/components/layout/Header";
 import { NotFound } from "~/components/layout/NotFound";
-import { PageHero } from "~/components/layout/PageHero";
 import { WhatsAppButton } from "~/components/layout/WhatsAppButton";
-import { Button } from "~/components/ui/Button";
-import { Section } from "~/components/ui/Section";
+import { PageHero } from "~/components/site/PageHero";
+import { SiteFooter } from "~/components/site/SiteFooter";
+import { SiteHeader } from "~/components/site/SiteHeader";
+import { PillLink } from "~/components/site/parts";
+import { pageErrorText } from "~/content/not-found";
 import { site } from "~/content/site";
 import { usesOwnFrame } from "~/lib/frame";
 import { useDocumentScrolling, usePageInstance } from "~/lib/navigation";
@@ -49,13 +49,10 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 /**
- * The parts every page shares, around the page itself. The whole frame is
- * keyed by the page instance, so each page load starts fresh: menu closed,
+ * The parts every page shares, around the page itself: the header laid over
+ * the page's dark opening, the footer and the WhatsApp button. The whole frame
+ * is keyed by the page instance, so each page load starts fresh: menu closed,
  * tabs and forms reset.
- *
- * The wrapper elements and their ids are kept from the original. The nav is
- * styled to stick to the top of the window, but its wrapper is only as tall as
- * the nav, so it scrolls away with the page. That is how the original behaves.
  *
  * With `ownFrame`, the page draws its own header and footer (lib/frame.ts).
  */
@@ -63,7 +60,7 @@ function PageFrame({ children, ownFrame = false }: { children: ReactNode; ownFra
   const instance = usePageInstance();
   useDocumentScrolling(instance);
   useEffect(() => {
-    // Lets the comparison suite wait until React has taken over the page.
+    // Lets tests wait until React has taken over the page.
     document.documentElement.dataset.hydrated = "true";
   }, []);
 
@@ -72,16 +69,12 @@ function PageFrame({ children, ownFrame = false }: { children: ReactNode; ownFra
       {ownFrame ? (
         children
       ) : (
-        <>
-          <div id="nav-placeholder">
-            <Header />
-          </div>
-          {children}
-          <div id="footer-placeholder">
-            <Footer />
-            <WhatsAppButton />
-          </div>
-        </>
+        <div className="bg-landing-surface font-landing-sans text-landing-ink">
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+          <WhatsAppButton />
+        </div>
       )}
     </Fragment>
   );
@@ -106,17 +99,12 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
   return (
     <PageFrame>
-      <PageHero
-        eyebrow={site.name}
-        titleBefore="Something "
-        titleAccent="Went Wrong"
-        lead="An unexpected error occurred. Please try again."
-      />
-      <Section>
-        <Button to="/" variant="ghost">
-          Back to Home
-        </Button>
-      </Section>
+      <PageHero {...pageErrorText.hero} />
+      <section className="bg-landing-surface px-landing-gutter py-16">
+        <PillLink to={pageErrorText.action.to} tone="dark">
+          {pageErrorText.action.label}
+        </PillLink>
+      </section>
     </PageFrame>
   );
 }

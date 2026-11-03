@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { homeCustom } from "~/content/home";
-import { ArrowUpRight, Eyebrow, PillLink, TitleText, sectionTitle } from "./parts";
+import { ArrowUpRight, Eyebrow, PillLink, TitleText, sectionTitle } from "~/components/site/parts";
 
 // An isometric moulding box (cope on drag) on a 470 by 290 sheet. x runs to
 // the right and back, y to the left and back, z up; (0, 0, 0) is the front

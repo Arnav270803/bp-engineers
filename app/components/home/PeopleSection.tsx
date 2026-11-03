@@ -1,6 +1,6 @@
 import { homePeople, homeProcess } from "~/content/home";
 import { cx } from "~/lib/cx";
-import { Eyebrow, PillLink, TitleText, sectionTitle } from "./parts";
+import { Eyebrow, PillLink, TitleText, sectionTitle } from "~/components/site/parts";
 
 /** "02 / The people behind the precision": the workshop, the story and three figures. */
 export function PeopleSection() {

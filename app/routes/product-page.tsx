@@ -11,8 +11,6 @@ export const handle: FrameHandle = {
   ownFrame: (match) => findProductPage(match.params.category, match.params.slug) !== undefined,
 };
 
-export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: site.productFontsUrl }];
-
 export const meta: Route.MetaFunction = ({ params }) => {
   const page = findProductPage(params.category, params.slug);
   if (!page) return [{ title: "Page Not Found" }];

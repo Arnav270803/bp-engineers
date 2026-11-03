@@ -1,8 +1,7 @@
 import type { Route } from "./+types/quote";
-import { PageHero } from "~/components/layout/PageHero";
 import { QuoteForm } from "~/components/quote/QuoteForm";
 import { QuoteSidebar } from "~/components/quote/QuoteSidebar";
-import { Section } from "~/components/ui/Section";
+import { PageHero } from "~/components/site/PageHero";
 import { quoteHero, quoteMeta } from "~/content/quote";
 
 export const meta: Route.MetaFunction = () => [
@@ -14,12 +13,10 @@ export default function Quote() {
   return (
     <>
       <PageHero {...quoteHero} />
-      <Section>
-        <div className="grid grid-cols-[1fr_2fr] [align-items:start] gap-15 upto-900:grid-cols-[1fr]">
-          <QuoteSidebar />
-          <QuoteForm />
-        </div>
-      </Section>
+      <section className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-start gap-x-12 gap-y-10 bg-landing-surface px-landing-gutter pt-16 pb-20 text-landing-ink upto-900:grid-cols-[minmax(0,1fr)]">
+        <QuoteSidebar />
+        <QuoteForm />
+      </section>
     </>
   );
 }

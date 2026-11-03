@@ -1,36 +1,36 @@
 import type { ReactNode } from "react";
 
-// The contact form sits on a dark panel and the quote form on a light one.
-// They look alike but differ in label size, spacing and colours, so each tone
-// carries its own exact values.
+// The contact form sits on the dark band and the quote form on a light panel.
+// Each tone carries its own colours; the shapes are the same.
 export type FieldTone = "dark" | "light";
 
 const wrapper: Record<FieldTone, string> = {
-  dark: "mb-3.5 flex flex-col gap-1.5",
-  light: "mb-4 flex flex-col gap-1.5",
+  dark: "mb-4 flex flex-col gap-2",
+  light: "mb-5 flex flex-col gap-2",
 };
 
 const labelText: Record<FieldTone, string> = {
-  dark: "text-10 font-semibold tracking-md text-ink-inverse-muted uppercase",
-  light: "text-11 font-semibold tracking-sm text-ink-muted uppercase",
+  dark: "font-landing-sans text-9 leading-[1.4] font-bold tracking-caps-wide text-landing-on-dark-muted uppercase",
+  light:
+    "font-landing-sans text-9 leading-[1.4] font-bold tracking-caps-wide text-landing-ink-muted uppercase",
 };
 
 /** Classes for an <input>, <select> or <textarea>. */
 export const fieldControl: Record<FieldTone, string> = {
-  dark: "w-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3.5 py-2.75 font-body text-14 text-ink-inverse transition-[border-color] duration-200 [outline:none] focus:border-brand",
+  dark: "w-full border border-[rgba(238,239,230,0.18)] bg-[rgba(238,239,230,0.05)] px-4 py-3 font-landing-sans text-14 text-landing-on-dark [outline:none] placeholder:text-[rgba(238,239,230,0.38)] focus:border-landing-action",
   light:
-    "w-full border border-line bg-surface-muted px-3.5 py-2.75 font-body text-14 text-ink transition-[border-color] duration-200 [outline:none] focus:border-brand focus:bg-surface",
+    "w-full border border-landing-line-strong bg-landing-surface-light px-4 py-3 font-landing-sans text-14 text-landing-ink [outline:none] placeholder:text-landing-ink-muted focus:border-landing-ink",
 };
 
 /** Extra classes for a <textarea>. */
 export const fieldTextarea: Record<FieldTone, string> = {
-  dark: "h-25 resize-none",
-  light: "h-25 resize-y",
+  dark: "h-28 resize-none",
+  light: "h-28 resize-y",
 };
 
 /** Extra classes for a <select>. */
 export const fieldSelect: Record<FieldTone, string> = {
-  dark: "[&_option]:bg-surface-inverse-raised [&_option]:text-ink-inverse",
+  dark: "[&_option]:bg-landing-dark [&_option]:text-landing-on-dark",
   light: "",
 };
 

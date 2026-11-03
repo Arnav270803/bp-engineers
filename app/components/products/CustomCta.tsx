@@ -1,22 +1,24 @@
-import { AppLink } from "~/components/ui/AppLink";
+import { Eyebrow, PillLink, TitleText, sectionTitle } from "~/components/site/parts";
 import { productsCta } from "~/content/products";
 
-// The band at the foot of the products page, kept from the original.
+/** The warm band at the foot of the products page: custom sizes and OEM work. */
 export function CustomCta() {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-7.5 bg-brand px-gutter py-15">
+    <section className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] items-end gap-x-16 gap-y-8 bg-landing-band px-landing-gutter pt-16 pb-16 text-landing-ink upto-900:grid-cols-[minmax(0,1fr)]">
       <div>
-        <div className="font-display text-cta-title-sm font-bold text-ink-inverse uppercase">
-          {productsCta.title}
-        </div>
-        <p className="mt-1.5 text-15 text-[rgba(255,255,255,0.8)]">{productsCta.text}</p>
+        <Eyebrow className="text-landing-band-ink">{productsCta.eyebrow}</Eyebrow>
+        <h2 className={`mt-6 ${sectionTitle}`}>
+          <TitleText title={productsCta.title} accentClass="text-landing-emphasis-warm" />
+        </h2>
       </div>
-      <AppLink
-        to={productsCta.action.to}
-        className="bg-surface px-8.5 py-3.5 font-display text-14 font-bold tracking-sm whitespace-nowrap text-brand uppercase"
-      >
-        {productsCta.action.label}
-      </AppLink>
-    </div>
+      <div>
+        <p className="max-w-90 font-landing-sans text-14 leading-[24px] text-landing-band-ink">
+          {productsCta.text}
+        </p>
+        <PillLink to={productsCta.action.to} tone="dark" className="mt-7">
+          {productsCta.action.label}
+        </PillLink>
+      </div>
+    </section>
   );
 }

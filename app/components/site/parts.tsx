@@ -1,7 +1,7 @@
-// Small pieces shared by the sections of the home page.
+// Small pieces shared by the sections of every page in the site's design.
 import { Fragment, type ReactNode } from "react";
 import { AppLink } from "~/components/ui/AppLink";
-import type { HomeTitle } from "~/content/home";
+import type { SectionTitle } from "~/content/titles";
 import { cx } from "~/lib/cx";
 
 /** The diagonal arrow beside links and buttons. */
@@ -39,7 +39,7 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
  * A serif title: each line, then the accent in italics. A line that ends in a
  * space runs on into the accent; otherwise the accent starts a new line.
  */
-export function TitleText({ title, accentClass }: { title: HomeTitle; accentClass: string }) {
+export function TitleText({ title, accentClass }: { title: SectionTitle; accentClass: string }) {
   const last = title.lines[title.lines.length - 1] ?? "";
   return (
     <>
@@ -65,6 +65,15 @@ const pillTone: Record<PillTone, string> = {
     "border border-[rgba(238,239,230,0.45)] text-landing-on-dark hover:border-landing-on-dark hover:bg-[rgba(238,239,230,0.08)]",
 };
 
+/** Classes for the rounded pill: a link, or a form's submit button drawn the same way. */
+export function pillClasses(tone: PillTone, className?: string) {
+  return cx(
+    "inline-flex h-13.5 items-center justify-between gap-11 rounded-full px-5.5 font-landing-sans text-12 leading-[1]",
+    pillTone[tone],
+    className,
+  );
+}
+
 /** A rounded button-like link with its label on the left and the arrow on the right. */
 export function PillLink({
   to,
@@ -78,14 +87,7 @@ export function PillLink({
   className?: string;
 }) {
   return (
-    <AppLink
-      to={to}
-      className={cx(
-        "inline-flex h-13.5 items-center justify-between gap-11 rounded-full px-5.5 font-landing-sans text-12 leading-[1]",
-        pillTone[tone],
-        className,
-      )}
-    >
+    <AppLink to={to} className={pillClasses(tone, className)}>
       <span>{children}</span>
       <ArrowUpRight />
     </AppLink>

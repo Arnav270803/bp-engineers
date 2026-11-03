@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { homeHero } from "~/content/home";
-import { PillLink } from "./parts";
+import { PillLink } from "~/components/site/parts";
 
 const smallCaps = "font-landing-sans text-11 leading-[18px] font-bold tracking-caps-wide uppercase";
 

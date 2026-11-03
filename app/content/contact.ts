@@ -1,5 +1,7 @@
-// Text of the contact page, copied verbatim from the original.
-import type { PageHeroContent } from "~/components/layout/PageHero";
+// Text of the contact page. The words are the original's; titles and labels
+// are in sentence case, as the site's design writes them.
+import type { PageHeroContent } from "~/components/site/PageHero";
+import type { SectionTitle } from "./titles";
 
 export const contactMeta = {
   title: "Contact — B.P. Engineers | Foundry Equipment Manufacturer Punjab",
@@ -10,13 +12,13 @@ export const contactMeta = {
 export const contactHero: PageHeroContent = {
   eyebrow: "Mubarikpur, Punjab, India",
   titleBefore: "Contact ",
-  titleAccent: "Us",
+  titleAccent: "us",
   lead: "Reach us by phone, WhatsApp, or email. We respond to all enquiries within 24 hours on working days.",
 };
 
 export const contactIntro = {
-  label: "Get In Touch",
-  title: "We're Here to Help",
+  label: "Get in touch",
+  title: { lines: ["We’re here"], accent: "to help." } satisfies SectionTitle,
   text: "Whether you need a standard moulding box or a complete custom sand handling system — talk to us. We'll respond with the right solution and a competitive quote.",
 };
 
@@ -30,11 +32,11 @@ export const contactDetailLabels = {
 
 export const contactMap = {
   text: "Mubarikpur, Ramgarh Road, Punjab",
-  linkLabel: "Open in Google Maps →",
+  linkLabel: "Open in Google Maps",
 };
 
 export const contactForm = {
-  title: "Send an Enquiry",
+  title: "Send an enquiry",
   sub: "We respond within 24 hours on working days.",
   subjectPrompt: "Select a topic",
   subjects: [
@@ -44,7 +46,7 @@ export const contactForm = {
     "Existing Order",
     "General Enquiry",
   ],
-  submit: "Send Message →",
+  submit: "Send message",
   sending: "Sending...",
   // Each message is written in parts around its links. A part must stay one
   // piece of text: splitting it changes how the browser spaces the letters.

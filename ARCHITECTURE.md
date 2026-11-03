@@ -2,14 +2,14 @@
 
 Last updated: 2026-11-03
 
-This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, five product pages with a design of their own (see [Product pages](#product-pages)) and a new design for the home page (see [Home page](#home-page)).
+This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, five product pages with a design of their own (see [Product pages](#product-pages)) and a new design for the home page, which on 2026-11-03 was carried to every other page (see [Design](#design)).
 
 ## Goals
 
 1. Rebuild the site in React and TypeScript without changing how it looks or behaves.
 2. Structure it so the site can grow: many more pages, a later restyle, and possibly app features such as logins.
 
-The first goal was checked automatically (see [Verification](#verification)). The second goal is the reason for the styling and component decisions below.
+The first goal was met and checked automatically (see [Verification](#verification)). The restyle has since happened: the site now has the owner's approved design. The words of the original and the behaviour of its links and forms were kept.
 
 ## Stack
 
@@ -25,7 +25,7 @@ The first goal was checked automatically (see [Verification](#verification)). Th
 
 **Pre-rendering** means the build writes a complete HTML file for each page. Search engines and visitors receive real content immediately, and React takes over in the browser afterwards. No server-side code runs.
 
-Deliberately left out: state libraries, UI kits, data-fetching libraries and CSS-in-JS. Motion is not installed yet. It belongs to the first new work after the clone.
+Deliberately left out: state libraries, UI kits, data-fetching libraries and CSS-in-JS. Motion is not installed: the design has no animations.
 
 React Router 8 needs Node 22.22 or later. The project uses the latest 7.x, with version 8's behaviour already switched on in `react-router.config.ts`, so the upgrade is small.
 
@@ -38,28 +38,31 @@ app/
   routes.ts               route table
   routes/                 one file per page
   components/
-    layout/               Header (nav and mobile menu), Footer, WhatsAppButton, PageHero, NotFound
-    ui/                   Section, SectionHeader, Button, Icon, AppLink, FormField
+    site/                 the site's frame and shared pieces: SiteHeader (with the menu),
+                          SiteFooter, PageHero, ClosingCta, parts (titles, pills, links)
+    layout/               WhatsAppButton, NotFound, AnimatedFavicon
+    ui/                   AppLink, FormField, Icon
     home/ about/ products/ gallery/ blog/ contact/ quote/
                           the pieces that belong to one page
     product-page/         the pieces of the product pages, which share one design
-  content/                text and lists as typed data, icons, articles
+  content/                text and lists as typed data, articles
     product-pages/        one file per product page, from the product page workbook
   lib/                    form requests, form memory, page-change handling, page frame
   assets/home/            the home page film and photos, some still placeholders
+  assets/pages/           the owner's photos and film stills used on other pages
   app.css                 base rules, theme, Tailwind entry
 public/                   files copied into the build as they are, including .htaccess
 scripts/preview.mjs       serves the production build locally
 .github/workflows/        deploy.yml: builds on every push to main and publishes the deploy branch
 ```
 
-A piece of UI used by one page stays in that page's folder. It moves into `components/ui/` when a second page needs it with identical styling. Pieces that only look alike stay separate: the form fields on the contact and quote pages differ in detail, and the home page and the product pages each keep their own small parts, although both use the same two fonts.
+A piece of UI used by one page stays in that page's folder. It moves into `components/site/` when a second page needs it with identical styling, as the header, footer, page opening and closing call did. Pieces that only look alike stay separate: the form fields of the contact and quote forms have a tone each, and the product pages keep their own small parts, although they use the same two fonts as the rest of the site.
 
 ## Routes
 
 | Address | Route file | Address on the original site |
 |---|---|---|
-| `/` | `routes/home.tsx` | `index.html`, since redesigned: see [Home page](#home-page) |
+| `/` | `routes/home.tsx` | `index.html` |
 | `/about` | `routes/about.tsx` | `about.html` |
 | `/products` | `routes/products.tsx` | `products.html` |
 | `/products/casting-equipment/<product>` | `routes/product-page.tsx` (`/products/:category/:slug`) | None: new pages, see [Product pages](#product-pages) |
@@ -75,42 +78,34 @@ The old `.html` addresses are redirected to the new ones with a 301 by `public/.
 
 All styling is Tailwind classes. `app/app.css` holds three things.
 
-**1. Base rules.** The original site's own reset (`*`, `html`, `body`, `a`), copied verbatim. Tailwind's default reset is not loaded, because it changes line height, list bullets, placeholder colour, `<small>` size and form-control fonts.
+**1. Base rules.** The original site's own reset (`*`, `html`, `body`, `a`), with the body's font and colours set to the site's design. Tailwind's default reset is not loaded, because it changes line height, list bullets, placeholder colour, `<small>` size and form-control fonts.
 
 **2. The theme.** Tailwind's default theme is not loaded either, so only the site's own values exist.
 
 | Kind | Theme values |
 |---|---|
-| Colours, by role | `brand`, `brand-strong`, `brand-soft`, `surface`, `surface-muted`, `surface-inverse`, `surface-inverse-raised`, `surface-inverse-hover`, `surface-deep`, `ink`, `ink-strong`, `ink-muted`, `ink-inverse`, `ink-inverse-muted`, `line`, `line-strong`, `whatsapp`, `danger` |
-| Fonts | `font-display` (Oswald), `font-body` (Source Sans 3) |
-| Weights | `normal` 400, `medium` 500, `semibold` 600, `bold` 700 |
-| Type sizes | `text-10` to `text-60` in pixels, plus the fluid sizes `text-hero`, `text-page-title`, `text-section-title`, `text-tagline`, `text-cta-title`, `text-cta-title-sm`, `text-featured-title` |
-| Letter spacing | `tracking-xs` 1px to `tracking-2xl` 4px |
-| Layout | `gutter` 6%, `section` 80px, `nav` 70px; the spacing unit is 4px |
+| The site's design | colours `landing-*`, fonts `font-landing-serif` (Gelasio) and `font-landing-sans` (Arimo), the fluid sizes `text-landing-*`, and `landing-gutter`, the side padding, which grows with the window from 20 to 80px. `text-landing-hero` and `-hero-sub` follow the width of the home page's title column (`cqi`) instead of the window. The prefix is historical: the design began as the home page's |
+| Product pages | colours `editorial-*`, fonts `font-editorial-serif`, `-sans` and `-heavy`, the fluid sizes `text-editorial-*`, and `editorial-gutter` 64px. Only the product pages use them |
+| Shared colours | `ink-inverse` (white), `whatsapp`, `danger` |
+| Type sizes | `text-8` to `text-60` in pixels |
+| Weights | `normal` 400, `bold` 700 |
+| Letter spacing | in ems: `tracking-caps-*` for small capitals, `tracking-display`, `tracking-headline`, `tracking-figure`, `tracking-snug`, `tracking-logo` |
+| Layout | the spacing unit is 4px |
 | Motion | the browser's default easing; there are no animations |
-| Product pages | colours `editorial-*`, fonts `font-editorial-serif`, `-sans` and `-heavy`, the fluid sizes `text-editorial-*`, letter spacing in ems (`tracking-caps-*`, `tracking-display`, `tracking-headline`, `tracking-figure`, `tracking-snug`, `tracking-logo`) and `editorial-gutter` 64px. Only the product pages use them |
-| Home page | colours `landing-*`, fonts `font-landing-serif` and `-sans`, the fluid sizes `text-landing-*`, `text-8` and `landing-gutter`, which grows with the window from 20 to 80px. `text-landing-hero` and `-hero-sub` follow the width of the hero title's column (`cqi`) instead of the window. Only the home page uses them |
 
-Colour roles:
+The main colour roles of the site's design:
 
 | Role | Value | Used for |
 |---|---|---|
-| `brand` | `#f07d1a` | Accents, primary buttons |
-| `brand-strong` | `#d96a0a` | Primary button hover |
-| `brand-soft` | `#ffa040` | Nav underline gradient, hover tints |
-| `surface` | `#ffffff` | Default background |
-| `surface-muted` | `#f2f4f7` | Light sections |
-| `surface-inverse` | `#0b1b2e` | Nav, hero, dark sections |
-| `surface-inverse-raised` | `#112238` | Mobile menu, cards on dark |
-| `surface-inverse-hover` | `#1a3050` | Hover on dark cards |
-| `surface-deep` | `#06101e` | Footer |
-| `ink` | `#19293d` | Body text |
-| `ink-strong` | `#0b1b2e` | Headings on light backgrounds |
-| `ink-muted` | `#607080` | Secondary text |
-| `ink-inverse` | `#ffffff` | Text on dark backgrounds |
-| `ink-inverse-muted` | `#b8c4d0` | Secondary text on dark backgrounds |
-| `line` | `#e0e5ec` | Light borders |
-| `line-strong` | `#c0cad6` | Dashed border |
+| `landing-surface` | `#eeeae1` | The cream of most sections |
+| `landing-surface-light`, `-stone`, `-mist` | `#f6f3ea`, `#e2dfd0`, `#e3e4dc` | Lighter, stone and grey-green sections, the closing call |
+| `landing-dark`, `-dark-deep` | `#14251f`, `#10211b` | The deep green: page openings, bands, the menu, the footer |
+| `landing-band` | `#dfa76e` | The warm band: custom manufacturing, values |
+| `landing-ink`, `-ink-muted` | `#21211a`, `#75746a` | Text and secondary text on light sections |
+| `landing-on-dark`, `-on-dark-soft`, `-on-dark-muted` | `#eeefe6`, `#c8d0c6`, `#acbbb2` | Text on the deep green |
+| `landing-emphasis`, `-emphasis-warm`, `-emphasis-on-dark` | `#797a6c`, `#74502a`, `#d9c19e` | The italic accents of titles |
+| `landing-action`, `-action-soft`, `-action-strong` | `#e39950`, `#e6aa64`, `#d6823a` | The orange pills and their hover |
+| `landing-line`, `-line-strong`, `-on-dark-line` | `#bebab1`, `#a19e95`, `#495a54` | Thin rules |
 
 **3. Breakpoints.** Four variants reproduce the original `max-width` queries exactly: `upto-900:`, `upto-860:`, `upto-768:` and `upto-600:`.
 
@@ -119,14 +114,11 @@ Colour roles:
 - Colours, fonts, weights, type sizes, letter spacing and layout constants come from the theme.
 - One-off measurements (a padding, a line-height ratio, a tinted colour with transparency) are written directly in the class.
 - The `hover:` variant applies on every device, as the original's `:hover` rules do.
-- Where the original used a CSS shorthand on a form control or button, the class uses the same shorthand, so the result is identical property for property.
-
-Merging breakpoints, adopting Tailwind's reset and regrouping type sizes are restyle decisions for later.
 
 **Two things that are easy to break**
 
 - **Semi-transparent colours keep their exact values.** A CSS minifier normally rewrites `rgba(240,125,26,0.1)` as 8-digit hex, which rounds the transparency to the nearest 1/255. Firefox keeps the finer value, so the rounding shows there as colours one step off. `vite.config.ts` tells the minifier to keep `rgba()`.
-- **One piece of text stays one piece.** In JSX, `{a}{b}` and `text{" "}` each create two separate pieces of text where the original has one. The browser then spaces the letters slightly differently. Join the text into one expression, or keep it in a content file.
+- **One piece of text stays one piece.** In JSX, `{a}{b}` and `text{" "}` each create two separate pieces of text where one is meant. The browser then spaces the letters slightly differently. Join the text into one expression, or keep it in a content file.
 
 ## Page changes
 
@@ -143,9 +135,9 @@ React Router's own scroll restoration is not used. It animated the jump to the t
 
 ## Product pages
 
-Five product pages, one per product in the product page workbook: Moulding Boxes, Pallet Cars, Bushes, Matchplate & Moulding Pins and Closing Pins, at `/products/casting-equipment/<product>`. They are new pages, not part of the original, and the owner approved a design of their own for them: an editorial layout on warm paper, with dark ink, one rust accent and serif type. The rest of the site keeps the original design, apart from the home page.
+Five product pages, one per product in the product page workbook: Moulding Boxes, Pallet Cars, Bushes, Matchplate & Moulding Pins and Closing Pins, at `/products/casting-equipment/<product>`. They are new pages, not part of the original, and the owner approved a design of their own for them: an editorial layout on warm paper, with dark ink, one rust accent and serif type. The rest of the site has the site's design (see [Design](#design)).
 
-**Reaching them.** On the products page, the Moulding Boxes card and four new Casting Equipment cards (05 to 08, in the existing card design) lead to the pages: the title link of such a card is stretched over the whole card, and its "Request Quote" link is raised above it so that it still goes to `/quote`. The home page's Moulding Boxes links lead to its page too. The pages link to each other through their related products and their footer. Back returns to the products page where it was left.
+**Reaching them.** On the products page, the Moulding Boxes card and four new Casting Equipment cards (05 to 08) lead to the pages: the title link of such a card is stretched over the whole card, and its "Request a quote" link is raised above it so that it still goes to `/quote`. The home page's Moulding Boxes links lead to its page too. The pages link to each other through their related products and their footer. Back returns to the products page where it was left.
 
 **Their own frame.** A product page has no nav bar: its header is the logo alone, leading to the home page, and it has a footer of its own. The route exports a `handle` with `ownFrame` (`lib/frame.ts`), and `root.tsx` then leaves out the site's header, footer and WhatsApp button; the page draws its own, and reuses `WhatsAppButton`. An address that names no product keeps the site's frame and shows "page not found".
 
@@ -154,20 +146,53 @@ Five product pages, one per product in the product page workbook: Moulding Boxes
 **Design.**
 
 - The theme values are prefixed `editorial-` (see [Styling](#styling)). Sizes reach their full value at a 1440px window and shrink with it; below 900px the layout is one column.
-- The fonts are Gelasio, Arimo and Archivo Black from Google Fonts, loaded by these pages only, through the route's `links`. Gelasio and Arimo have the measurements of Georgia and Arial, so the layout does not move while they load.
+- The fonts are Gelasio, Arimo and Archivo Black from Google Fonts, loaded for every page by `root.tsx` (`site.fontsUrl`); Archivo Black is used by these pages only. Gelasio and Arimo have the measurements of Georgia and Arial, so the layout does not move while they load.
 - There are no product photos yet, so the large figure at the top shows the product's line drawing (`ProductDrawing`). Setting `hero.image` in a page's file replaces it with a photo.
 - The contents list and the round quote link stay in view beside the text, and the list marks the chapter being read. Their links scroll without adding a history entry. A `#` entry made by the browser carries no router state, so `lib/navigation.ts` files it under the same key as the first page of the visit, and Back would put that page at the wrong position; it would also have to step back through each `#` before leaving the page.
 - No animation was added. Scrolling to a chapter is smooth, as `scroll-behavior: smooth` already makes every `#` link on the site.
 
 **The quote form** sends the same eight fields as the site's other forms, to the same script, with the product's name in `product`, its details in `requirements` and `Product Page` as the source. The script cannot receive files, so the form asks for drawings by WhatsApp or email instead of uploading them.
 
+## Design
+
+On 2026-11-02 the owner approved a new design for the home page, given as five screenshots of a finished page: cream and stone sections, a deep green, an orange accent, serif headlines and large photos. On 2026-11-03 the owner asked for it on every other page too. Every page now has it, except the product pages, which keep their own.
+
+**The frame.** `root.tsx` puts every page between the site's header and footer, with the WhatsApp button (`PageFrame`). A route that exports a `handle` with `ownFrame` (`lib/frame.ts`) draws its own instead, as the product pages do.
+
+- The header (`SiteHeader`) lies over the dark opening of each page: the logo, Products, Get a quote and a Menu button. At 768px and below it keeps only the logo, Get a quote and Menu, and at 600px and below only the logo and Menu.
+- The menu covers the whole window, above the WhatsApp button, and closes with its button or the Escape key. It marks the page being viewed, or the section it belongs to, such as Knowledge for an article.
+- The footer (`SiteFooter`) has the address, the first phone number, the email address and the WhatsApp link from `content/site.ts`, and a back-to-top button.
+
+**The pieces.** They are in `components/site/` and used the same way on every page:
+
+- `PageHero`: the dark opening of every page but the home page. Small capitals, a large serif title whose middle part is the accent in italics, and the lead beside it.
+- Section titles are serif, their last words an accent in italics (`SectionTitle` in `content/titles.ts`, drawn by `TitleText`). A section opens with small capitals (`Eyebrow`).
+- `PillLink` is the rounded button with the arrow; a form's submit button is drawn the same way (`pillClasses`). `UnderlineLink` is the text link with a rule under it.
+- Lists, steps and cards sit under thin rules, numbered 01, 02 and so on. Bands of deep green, the warm band and the stone band break the cream sections.
+- `ClosingCta`: "Let's make it work", the call to get a quote at the foot of the home, About, Knowledge and article pages.
+
+**Words.** The content files keep the original's words. Titles, labels and buttons are in sentence case, as the design writes them, and a title is split into its words and its accent. The arrows that followed some labels ("Request Quote →") are drawn as icons. The design's own labels, such as "Coming soon" over the announced guides, are new.
+
+**Photos.** The owner's photos are in `app/assets/home/` and `app/assets/pages/`, with stills taken from the factory film. A product or gallery tile without a real photo shows a placeholder, never an unrelated photo. Three placeholders on the home page are still cut from the approved design's screenshots (see [Home page](#home-page)).
+
+**Behaviour.** The redesign kept what the pages do: the product tabs, the stretched links of the product cards, the gallery's filter buttons that do nothing, the `#` links of the announced articles, and the forms, which send the same fields to the same script and keep their quirks (see [Kept from the original on purpose](#kept-from-the-original-on-purpose)). No animation was added.
+
+## Pages
+
+- **Home:** see [Home page](#home-page).
+- **About:** the story beside a workshop photo, with the pull quote; the five years of the journey; the company profile on the deep green; the six capabilities; the three values on the warm band; the closing call.
+- **Products:** the three categories as tabs, each product a card with its number, tag, text and specifications under thin rules; a card with a product page has an arrow and leads there. The warm band asks about custom sizes.
+- **Gallery:** the filter buttons, then eight tiles. Five show the owner's photos and film stills; the pouring ladle, conveyor system and conveyor rollers tiles wait for photos. The stone band says more photos are coming.
+- **Knowledge:** the featured guide beside its picture, the six announced guides as cards, the closing call. An **article** has its category and byline, then the text with serif headings, rules and tables, and a sidebar that stays in view.
+- **Contact:** the contact details between thin rules, a panel that opens Google Maps, and the enquiry form on the deep green.
+- **Quote:** the direct contacts and the promises beside the form, whose three parts are numbered, and the submit bar.
+- **Not found:** the page opening and a button back to the home page.
+
 ## Home page
 
-The owner approved a new design for the home page, given as five screenshots of a finished page: cream and stone sections, a deep green, an orange accent, serif headlines and large photos. It replaces the original home page. The rest of the site keeps the original design, apart from the product pages.
+The home page is the source of the site's design (see [Design](#design)) and replaces the original home page.
 
 **Sections**, in order: the hero with the factory film; "Strength in every detail" with the four products as links; the equipment, as four photo cards; the workshop and three figures; the four steps from brief to build; custom manufacturing, with a drawing of a moulding box; the industries; the featured guide; the closing call to get a quote; the footer.
-
-**Its own frame.** Like the product pages, the route exports a `handle` with `ownFrame`, so `root.tsx` leaves out the site's header, footer and WhatsApp button. The header sits over the hero: the logo, Products, Get a quote and a Menu button. The menu covers the whole window, above the WhatsApp button, and closes with its button or the Escape key; at 768px and below the header keeps only the logo, Get a quote and Menu, and at 600px and below only the logo and Menu. The footer is the page's own, with the address, the first phone number, the email address and the WhatsApp link from `content/site.ts`, and a back-to-top button. The page reuses `WhatsAppButton`.
 
 **Content.** All text is in `content/home.ts`. It follows the wording of the approved design and says what the original home page said: the products, Mubarikpur in Punjab, since 1990, custom and OEM work, supply across India. The Moulding Boxes card and list entry lead to the Moulding Boxes product page; the other products and the industries lead to `/products`, and the featured guide to the moulding box article. The original page's ticker, strength cards and industry cards are gone with it.
 
@@ -181,10 +206,9 @@ The owner approved a new design for the home page, given as five screenshots of 
 
 **Photos.** The photos are in `app/assets/home/`. Three are the owner's own photos of moulding boxes: the Moulding boxes card (`moulding-boxes.jpg`), the workshop (`workshop.jpg`) and the featured guide (`knowledge-moulding-boxes.jpg`, the product on white, widened with white to the frame's shape). The Pouring ladles, Conveyor systems and Conveyor rollers cards are still placeholders, cut from the approved design's screenshots and cleaned of the text printed over them. To change a photo, replace the file of the same name; the layout crops each photo to its frame. To change the film, replace `hero-film.mp4` and its poster with another upright film.
 
-**Design.**
+**Details.**
 
-- The theme values are prefixed `landing-` (see [Styling](#styling)). Sizes follow the window: at 1265px, the width of the approved screenshots, they match the design. On narrower windows the sections stack, at 900, 768 or 600px depending on the section.
-- The fonts are Gelasio and Arimo, the product pages' serif and sans, loaded through the route's `links` from the same Google Fonts address.
+- Sizes follow the window: at 1265px, the width of the approved screenshots, they match the design. On narrower windows the sections stack, at 900, 768 or 600px depending on the section.
 - The drawing in the custom manufacturing section is an SVG (`CustomSection.tsx`), not a picture, so it stays sharp at every size.
 - The workshop photo darkens slightly towards its foot, so that its captions stay readable over a light part of the photo.
 - No animation was added; the film is the only thing that moves. The back-to-top button scrolls smoothly unless the visitor asks for reduced motion.
@@ -192,8 +216,9 @@ The owner approved a new design for the home page, given as five screenshots of 
 ## Content
 
 - `content/site.ts` is the single source for the company name, address, phone numbers, email address, WhatsApp link and external addresses. Components never hard-code these.
-- `content/navigation.ts` holds the nav, mobile menu and footer lists. The home page's own menu and footer lists are in `content/home.ts`.
-- `content/icons.ts` holds the icon paths.
+- `content/navigation.ts` holds the words of the header, the menu and the footer; `content/closing.ts` those of the closing call; `content/not-found.ts` those of the "page not found" and error screens.
+- `content/titles.ts` defines the shape of a section title: its words and its accent.
+- `content/icons.ts` holds the WhatsApp icon.
 - One file per page holds that page's repeated items (cards, timeline entries, form options).
 - `content/blog/` holds one MDX file per article. Adding a file there adds a page at `/blog/<file name>`.
 
@@ -201,18 +226,15 @@ A CMS is not part of this design. It becomes worth adding if non-developers need
 
 ## Forms and analytics
 
-- `lib/forms.ts` builds the request for both forms and posts it to the existing Google Apps Script web app, exactly as the original does: JSON in the body and no request headers.
+- `lib/forms.ts` builds the request for both forms and posts it to the existing Google Apps Script web app, exactly as the original does: JSON in the body and no request headers. The redesign changed how the forms look, not their fields or what they send.
 - The existing Google Analytics (GA4) tag is loaded in `root.tsx`, in production builds only, so development records no visits. Moving between pages no longer reloads the browser page, so page views must be confirmed in Google Analytics after the first deploy.
 
 ## Kept from the original on purpose
 
-The first goal was an exact copy, so the original's oddities were copied too. Each one is a candidate fix, waiting for a decision.
+The first goal was an exact copy, so the original's oddities were copied too. Each one is a candidate fix, waiting for a decision. Q1 to Q3 belonged to the original nav and footer and went with them in the redesign.
 
 | # | What happens | Where |
 |---|---|---|
-| Q1 | The nav is styled to stick to the top but does not, because its wrapper is only as tall as the nav | `app/root.tsx`, `components/layout/Header.tsx` |
-| Q2 | An open mobile menu stays visible if the window is widened past 900px, and stays fixed in place while the page scrolls | `components/layout/Header.tsx` |
-| Q3 | Footer product links carry `#casting`, `#sand` and `#fab`, but nothing reads them, so the first tab always opens | `content/navigation.ts`, `components/products/ProductTabs.tsx` |
 | Q4 | Gallery filter buttons do nothing, and no page links to the gallery | `components/gallery/GalleryFilter.tsx` |
 | Q5 | After a successful contact submission the button stays disabled and keeps reading "Sending..." | `components/contact/ContactForm.tsx` |
 | Q6 | After a failed submission, both form buttons show the raw text `&#8594;` where the arrow should be | `content/contact.ts`, `content/quote.ts` |
@@ -255,9 +277,16 @@ The match with the original was checked by tests, not by eye. On 2026-10-13 all 
 
 The comparisons cover eight pages at 15 widths from 360 to 2560px, scrolled views, the open mobile menu, product tabs, hover and focus states, every form state, and each page reached by clicking a link.
 
-The suite is not in this repository. It needs a copy of the original site beside the project and holds a large recording of it, so it lives in a `tests/` folder on the developer's machine, which git ignores. It stays useful only while the site is meant to match the original; once the design starts to change, it is retired.
+The suite is not in this repository. It needs a copy of the original site beside the project and holds a large recording of it, so it lives in a `tests/` folder on the developer's machine, which git ignores. It is retired with the redesign: the pages no longer match the original's design, so its comparisons fail by design. Its form payload tests still describe what the forms send.
 
 Since the product pages, the products page differs from the original on purpose: the Moulding Boxes card leads to its page and four cards were added. Since the new home page, the home page differs too. The suite reports these differences. After each of the two changes, every other page was checked on 2026-11-02 by comparing screenshots with the build before the change, at 1440 and 390px: all are identical pixel for pixel, the product pages included after the home page change. On 2026-11-03, after the owner's photos and film were added to the home page, every other page's built HTML was compared with the build before: identical, apart from the names of the built files.
+
+The redesign of the other pages on 2026-11-03 was checked this way:
+
+- The five product pages are identical pixel for pixel to the build before, at 1440 and 390px.
+- Every page renders at 1440 and 390px with no error, no sideways scroll and no broken image.
+- The menu opens and closes on every page and marks the current one; the product tabs switch; a product card opens its page and Back returns to the same place; the card's quote link still goes to `/quote`.
+- The contact and quote forms keep the same fields and the same sending code, and refuse to send when empty. No form was sent to the live script.
 
 ## Commands
 
@@ -299,6 +328,7 @@ So every push to `main` that passes the checks goes live within a few minutes. I
 2. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
 3. **Node version:** Node 22.22 or later is needed before moving to React Router 8. The deploy workflow uses the latest Node 22.
 4. **Page views in Google Analytics:** confirm after the first deploy that moving between pages records page views (see [Forms and analytics](#forms-and-analytics)).
-5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)). On the home page, three product photos are still placeholders taken from its approved design (see [Home page](#home-page)).
-6. **Drawing uploads:** the product page form asks for drawings by WhatsApp or email. Uploading them needs the Google Apps Script to accept files.
-7. **Workbook questions:** bush hardness is 58–62 HRC in the Bushes specifications but 58–60 HRC in its FAQ and on the Moulding Boxes page; the pallet car bearing make "NGC" may mean NBC. The pages show both as written.
+5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)). On the home page, three product photos are still placeholders taken from its approved design (see [Home page](#home-page)); in the gallery, three tiles wait for photos.
+6. **The "page not found" screen** is `__spa-fallback.html`, served for unknown addresses. React reports a hydration mismatch on it (error 418) and draws the page in the browser instead; the visitor sees the right page. It was so before the redesign.
+7. **Drawing uploads:** the product page form asks for drawings by WhatsApp or email. Uploading them needs the Google Apps Script to accept files.
+8. **Workbook questions:** bush hardness is 58–62 HRC in the Bushes specifications but 58–60 HRC in its FAQ and on the Moulding Boxes page; the pallet car bearing make "NGC" may mean NBC. The pages show both as written.

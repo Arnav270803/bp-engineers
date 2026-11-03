@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { AppLink } from "~/components/ui/AppLink";
 import { homeEquipment } from "~/content/home";
-import { ArrowUpRight, Eyebrow, TitleText, UnderlineLink, sectionTitle } from "./parts";
+import { ArrowUpRight, Eyebrow, TitleText, UnderlineLink, sectionTitle } from "~/components/site/parts";
 
 /** "01 / The equipment": a photo card for each of the four main products. */
 export function EquipmentSection() {

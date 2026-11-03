@@ -1,6 +1,6 @@
 import { AppLink } from "~/components/ui/AppLink";
-import { footerCompanyLinks, footerCopyright, footerIntro } from "~/content/navigation";
 import { productPageHref, productPageText, productPages, type ProductPage } from "~/content/product-pages";
+import { productPageFooterText } from "~/content/product-pages/shared";
 import { site } from "~/content/site";
 import { cx } from "~/lib/cx";
 import { EditorialLogo } from "./EditorialLogo";
@@ -30,7 +30,9 @@ export function ProductPageFooter({ current }: { current: ProductPage }) {
           <AppLink to="/" aria-label={productPageText.homeLink} className="inline-block">
             <EditorialLogo tone="dark" />
           </AppLink>
-          <p className="mt-6 max-w-90 text-15 leading-[1.7] text-editorial-on-dark-soft">{footerIntro}</p>
+          <p className="mt-6 max-w-90 text-15 leading-[1.7] text-editorial-on-dark-soft">
+            {productPageFooterText.intro}
+          </p>
         </div>
         <div>
           <h4 className={heading}>{text.products}</h4>
@@ -49,7 +51,7 @@ export function ProductPageFooter({ current }: { current: ProductPage }) {
         </div>
         <div>
           <h4 className={heading}>{text.company}</h4>
-          {footerCompanyLinks.map((item) => (
+          {productPageFooterText.companyLinks.map((item) => (
             <AppLink key={item.label} to={item.to} className={link}>
               {item.label}
             </AppLink>
@@ -75,7 +77,7 @@ export function ProductPageFooter({ current }: { current: ProductPage }) {
       <div
         className={`mt-16 flex justify-between gap-6 border-t pt-6 font-editorial-sans text-10 leading-[1.5] tracking-caps text-editorial-on-dark-muted uppercase upto-900:flex-col upto-900:gap-2.5 ${rule}`}
       >
-        <span>{footerCopyright}</span>
+        <span>{productPageFooterText.copyright}</span>
         <span>{`${site.domain}${productPageHref(current)}`}</span>
       </div>
     </footer>

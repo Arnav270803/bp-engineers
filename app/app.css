@@ -1,9 +1,9 @@
 /*
  * B.P. Engineers — base rules, theme and Tailwind entry.
  *
- * Tailwind's default reset and default theme are deliberately not loaded. The
- * clone has to match the original site exactly, so the base rules are the
- * original's own, and the only design values available are the original's.
+ * Tailwind's default reset and default theme are deliberately not loaded: the
+ * base rules are the original site's own reset, and the only design values
+ * available are the site's own (ARCHITECTURE.md, "Styling").
  */
 @layer theme, base, components, utilities;
 @import "tailwindcss/utilities.css" layer(utilities) source("./");
@@ -21,29 +21,12 @@
 @theme static {
   /* Spacing. One unit is 4px, in pixels as the original is. */
   --spacing: 4px;
-  --spacing-gutter: 6%; /* side padding of the nav, sections and footer */
-  --spacing-section: 80px; /* top and bottom padding of a section */
-  --spacing-nav: 70px; /* nav height; the mobile menu starts below it */
   --spacing-editorial-gutter: 64px; /* side padding of the product pages */
-  --spacing-landing-gutter: clamp(20px, 4.8vw, 80px); /* side padding of the home page */
+  --spacing-landing-gutter: clamp(20px, 4.8vw, 80px); /* side padding of every other page */
 
-  /* Colours, named by role. */
-  --color-brand: #f07d1a;
-  --color-brand-strong: #d96a0a;
-  --color-brand-soft: #ffa040;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f2f4f7;
-  --color-surface-inverse: #0b1b2e;
-  --color-surface-inverse-raised: #112238;
-  --color-surface-inverse-hover: #1a3050;
-  --color-surface-deep: #06101e;
-  --color-ink: #19293d;
-  --color-ink-strong: #0b1b2e;
-  --color-ink-muted: #607080;
+  /* Colours, named by role. These three are shared: white text on the product
+     pages' accents, the WhatsApp button, and the border of a failed form. */
   --color-ink-inverse: #ffffff;
-  --color-ink-inverse-muted: #b8c4d0;
-  --color-line: #e0e5ec;
-  --color-line-strong: #c0cad6;
   --color-whatsapp: #25d366;
   --color-danger: #ff5555;
 
@@ -68,8 +51,9 @@
   --color-editorial-on-dark-soft: #c6c7bc;
   --color-editorial-on-dark-muted: #8e9185;
 
-  /* Home page. It has its own design: cream and stone sections, deep green,
-     an orange accent and serif headlines. See ARCHITECTURE.md. */
+  /* The site's design, on every page but the product pages: cream and stone
+     sections, deep green, an orange accent and serif headlines. It began as
+     the home page's, hence the prefix. See ARCHITECTURE.md, "Design". */
   --color-landing-surface: #eeeae1;
   --color-landing-surface-light: #f6f3ea;
   --color-landing-surface-stone: #e2dfd0;
@@ -101,21 +85,16 @@
   --color-landing-on-dark-sign: #c4ceb9;
   --color-landing-on-dark-line: #495a54;
 
-  /* Type. */
-  --font-display: "Oswald", sans-serif;
-  --font-body: "Source Sans 3", sans-serif;
-  /* Product pages. Gelasio and Arimo have the same measurements as Georgia
+  /* Type. Product pages. Gelasio and Arimo have the same measurements as Georgia
      and Arial, so the page keeps its shape while the fonts load. */
   --font-editorial-serif: "Gelasio", Georgia, serif;
   --font-editorial-sans: "Arimo", Arial, sans-serif;
   --font-editorial-heavy: "Archivo Black", "Arial Black", sans-serif;
-  /* Home page: the same two families as the product pages' serif and sans. */
+  /* The site's design: the same two families as the product pages' serif and sans. */
   --font-landing-serif: "Gelasio", Georgia, serif;
   --font-landing-sans: "Arimo", Arial, sans-serif;
 
   --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
   --text-8: 8px;
@@ -145,21 +124,14 @@
   --text-42: 42px;
   --text-60: 60px;
 
-  /* Sizes that grow with the window. */
-  --text-hero: clamp(44px, 6vw, 76px);
-  --text-page-title: clamp(36px, 5vw, 60px);
-  --text-section-title: clamp(26px, 4vw, 42px);
-  --text-tagline: clamp(15px, 2vw, 21px);
-  --text-cta-title: clamp(24px, 3vw, 38px);
-  --text-cta-title-sm: clamp(22px, 3vw, 36px);
-  --text-featured-title: clamp(22px, 3vw, 32px);
   /* Product pages. Each reaches its full size at a 1440px window. */
   --text-editorial-display: clamp(56px, 7.2vw, 104px);
   --text-editorial-title: clamp(32px, 3.2vw, 46px);
   --text-editorial-statement: clamp(24px, 2.36vw, 34px);
   --text-editorial-figure: clamp(42px, 3.75vw, 54px);
   --text-editorial-sign: clamp(40px, 5.28vw, 76px);
-  /* Home page. Sizes follow the window, as in the approved design at 1265px.
+  /* The site's design. Sizes follow the window, as in the approved home page
+     design at 1265px.
      The hero title follows the width of its column instead (cqi): "ENGINEERED"
      is 6.09 times as wide as its size, so 16cqi fills the column. */
   --text-landing-hero: clamp(40px, 16cqi, 200px);
@@ -171,14 +143,10 @@
   --text-landing-stat: clamp(32px, 3.3vw, 46px);
   --text-landing-sign: clamp(44px, 9.8vw, 142px);
   --text-landing-menu: clamp(32px, 4vw, 56px);
+  --text-landing-page-title: clamp(44px, 6.2vw, 96px);
+  --text-landing-quote: clamp(22px, 2.1vw, 30px);
 
-  --tracking-xs: 1px;
-  --tracking-sm: 1.5px;
-  --tracking-md: 2px;
-  --tracking-lg: 2.5px;
-  --tracking-xl: 3px;
-  --tracking-2xl: 4px;
-  /* Product pages: small capitals are spaced in ems, headlines are tightened. */
+  /* Small capitals are spaced in ems, headlines are tightened. */
   --tracking-caps-tight: 0.08em;
   --tracking-caps-snug: 0.1em;
   --tracking-caps: 0.15em;
@@ -196,7 +164,7 @@
   --default-transition-duration: 0s;
 }
 
-/* The original site's reset, verbatim. */
+/* The original site's reset, with the site's own font and colours. */
 @layer base {
   * {
     margin: 0;
@@ -207,9 +175,9 @@
     scroll-behavior: smooth;
   }
   body {
-    font-family: var(--font-body);
-    color: var(--color-ink);
-    background: var(--color-surface);
+    font-family: var(--font-landing-sans);
+    color: var(--color-landing-ink);
+    background: var(--color-landing-surface);
     overflow-x: hidden;
   }
   a {

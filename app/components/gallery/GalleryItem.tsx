@@ -1,30 +1,32 @@
-import { Icon } from "~/components/ui/Icon";
-import { galleryPlaceholderNote } from "~/content/gallery";
-import type { IconName } from "~/content/icons";
+import { galleryPlaceholderNote, type GalleryTile } from "~/content/gallery";
 
-interface GalleryItemProps {
-  icon: IconName;
-  name: string;
-  title: string;
-  category: string;
-}
-
-/** A placeholder tile. Its caption slides up when the tile is hovered. */
-export function GalleryItem({ icon, name, title, category }: GalleryItemProps) {
+/** A photo of the gallery with its title, or a panel saying the photo is coming. */
+export function GalleryItem({ name, title, category, image, number }: GalleryTile & { number: string }) {
   return (
-    <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden bg-surface-inverse-raised">
-      <div className="flex h-full w-full flex-col items-center justify-center gap-3 transition-[background] duration-300 group-hover:bg-surface-inverse-hover">
-        <Icon name={icon} className="h-10 w-10 fill-[rgba(240,125,26,0.4)]" />
-        <div className="px-5 text-center font-display text-13 font-semibold tracking-xs text-ink-inverse-muted uppercase">
-          {name}
-          <br />
-          {galleryPlaceholderNote}
-        </div>
+    <figure>
+      <div className="relative aspect-[4/3] overflow-hidden bg-landing-surface-stone">
+        {image ? (
+          <img src={image} alt={title} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+            <span className="font-landing-serif text-26 leading-[1.1] text-landing-ink-muted italic">
+              {name}
+            </span>
+            <span className="font-landing-sans text-8 leading-[1] tracking-caps-wide text-landing-ink-muted uppercase">
+              {galleryPlaceholderNote}
+            </span>
+          </div>
+        )}
+        <span className="absolute top-4.5 left-4.5 bg-landing-surface px-2.5 py-1.5 font-landing-sans text-9 leading-[1] tracking-caps-wide text-landing-ink uppercase">
+          {number}
+        </span>
       </div>
-      <div className="absolute right-0 bottom-0 left-0 [transform:translateY(100%)] bg-[linear-gradient(transparent,rgba(11,27,46,0.9))] px-4 pt-5 pb-4 transition-[transform] duration-300 group-hover:[transform:translateY(0)]">
-        <div className="font-display text-15 font-semibold text-ink-inverse uppercase">{title}</div>
-        <div className="mt-0.75 text-11 tracking-xs text-brand">{category}</div>
-      </div>
-    </div>
+      <figcaption className="mt-4 flex items-baseline justify-between gap-4">
+        <span className="font-landing-sans text-17 leading-[1.25] tracking-[-0.01em]">{title}</span>
+        <span className="shrink-0 text-right font-landing-sans text-8 leading-[1.4] tracking-caps-wide text-landing-ink-muted uppercase">
+          {category}
+        </span>
+      </figcaption>
+    </figure>
   );
 }

@@ -1,7 +1,14 @@
-// Text of the gallery page, copied verbatim from the original. The site has no
-// photos yet, so every tile is a placeholder.
-import type { PageHeroContent } from "~/components/layout/PageHero";
-import type { IconName } from "./icons";
+// Text and photos of the gallery page. The words are the original's; titles and
+// labels are in sentence case, as the site's design writes them. Five tiles show
+// the owner's own photos and stills from the factory film; the others wait for
+// photos and say so.
+import mouldingBoxes from "~/assets/home/moulding-boxes.jpg";
+import welding from "~/assets/home/workshop.jpg";
+import cnc from "~/assets/pages/gallery-cnc.jpg";
+import facility from "~/assets/pages/gallery-facility.jpg";
+import flaskAssembly from "~/assets/pages/gallery-flask-assembly.jpg";
+import type { PageHeroContent } from "~/components/site/PageHero";
+import type { SectionTitle } from "./titles";
 
 export const galleryMeta = {
   title: "Gallery — B.P. Engineers | Foundry Equipment Photos",
@@ -12,11 +19,11 @@ export const galleryMeta = {
 export const galleryHero: PageHeroContent = {
   eyebrow: "Our Work · Manufacturing Facility",
   titleBefore: "Product ",
-  titleAccent: "Gallery",
+  titleAccent: "gallery",
   lead: "Photos of our foundry equipment — moulding boxes, pouring ladles, conveyor systems, and our manufacturing facility in Mubarikpur, Punjab.",
 };
 
-/** The first filter is shown as selected. The buttons do nothing, as in the original. */
+/** The first filter is shown as selected. The buttons do nothing, as on the original site. */
 export const galleryFilters = [
   "All",
   "Moulding Boxes",
@@ -26,36 +33,50 @@ export const galleryFilters = [
   "Facility",
 ];
 
-export const galleryPlaceholderNote = "Photo Coming Soon";
+export const galleryPlaceholderNote = "Photo coming soon";
 
-export const galleryTiles: Array<{ icon: IconName; name: string; title: string; category: string }> = [
+export interface GalleryTile {
+  name: string;
+  title: string;
+  category: string;
+  /** The photo. A tile without one shows its name and that a photo is coming. */
+  image?: string;
+}
+
+export const galleryTiles: GalleryTile[] = [
   {
-    icon: "bars",
     name: "Moulding Box",
     title: "Moulding Box — Standard Series",
     category: "Casting Equipment",
+    image: mouldingBoxes,
   },
+  { name: "Pouring Ladle", title: "Crane Handled Pouring Ladle", category: "Casting Equipment" },
+  { name: "Conveyor System", title: "Sand Conveyor Belt System", category: "Sand Handling" },
+  { name: "Conveyor Rollers", title: "Heavy Duty Conveyor Rollers", category: "Sand Handling" },
   {
-    icon: "clockFilledAlt",
-    name: "Pouring Ladle",
-    title: "Crane Handled Pouring Ladle",
+    name: "Welding Shop",
+    title: "MIG Welding — Structural Assembly",
+    category: "Fabrication",
+    image: welding,
+  },
+  { name: "CNC Machining", title: "CNC Turning Centre", category: "Fabrication", image: cnc },
+  {
+    name: "Flask Equipment",
+    title: "Complete Flask Assembly",
     category: "Casting Equipment",
+    image: flaskAssembly,
   },
-  { icon: "funnel", name: "Conveyor System", title: "Sand Conveyor Belt System", category: "Sand Handling" },
-  { icon: "ring", name: "Conveyor Rollers", title: "Heavy Duty Conveyor Rollers", category: "Sand Handling" },
-  { icon: "leaf", name: "Welding Shop", title: "MIG Welding — Structural Assembly", category: "Fabrication" },
-  { icon: "cube", name: "CNC Machining", title: "CNC Turning Centre", category: "Fabrication" },
-  { icon: "bars", name: "Flask Equipment", title: "Complete Flask Assembly", category: "Casting Equipment" },
   {
-    icon: "square",
     name: "Manufacturing Floor",
     title: "B.P. Engineers Facility — Mubarikpur",
     category: "Facility",
+    image: facility,
   },
 ];
 
 export const photosComingSoon = {
-  title: "Photos Coming Soon",
+  eyebrow: "More photos",
+  title: { lines: ["Photos"], accent: "coming soon." } satisfies SectionTitle,
   text: "We are adding real photos of our products and facility. Check back soon — or contact us directly and we will share photos of specific equipment you need.",
-  action: { label: "Contact Us for Photos", to: "/contact" },
+  action: { label: "Contact us for photos", to: "/contact" },
 };

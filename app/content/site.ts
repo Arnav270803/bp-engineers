@@ -15,10 +15,8 @@ export const site = {
   email: { label: "bpengineerschd@yahoo.com", href: "mailto:bpengineerschd@yahoo.com" },
   whatsapp: { label: "+91 98780 42569", href: "https://wa.me/919878042569" },
   mapsUrl: "https://maps.google.com/?q=Mubarikpur,Ramgarh+Road,Punjab,India",
+  /** Gelasio and Arimo for every page; Archivo Black for the product pages. */
   fontsUrl:
-    "https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap",
-  /** Fonts of the product pages, loaded by those pages only. */
-  productFontsUrl:
     "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Arimo:wght@400;700&family=Gelasio:ital@0;1&display=swap",
   analyticsId: "G-PELCQTYKBD",
 } as const;
