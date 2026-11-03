@@ -29,6 +29,8 @@ export function PeopleSection() {
         </div>
         <figure className="relative min-h-[590px] overflow-hidden upto-900:min-h-[360px]">
           <img src={homePeople.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          {/* Keeps the captions readable over a light part of the photo. */}
+          <div className="absolute inset-x-0 bottom-0 h-30 bg-[linear-gradient(180deg,rgba(9,14,11,0)_0%,rgba(9,14,11,0.5)_100%)]"></div>
           <figcaption className="absolute inset-x-7 bottom-7 flex items-center justify-between font-landing-sans text-9 leading-[1] tracking-caps-wide text-landing-on-dark uppercase">
             <span>{homePeople.imageCaption}</span>
             <span className="flex items-center gap-2.5">

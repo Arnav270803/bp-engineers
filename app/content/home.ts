@@ -1,7 +1,8 @@
 // Text and pictures of the home page, in its own design (ARCHITECTURE.md,
-// "Home page"). The photos are placeholders taken from the approved design;
-// replace a file in app/assets/home/ to change one. A hero video goes in
-// `homeHero.video`.
+// "Home page"). The moulding box, workshop and guide photos are the owner's;
+// the hero and the other three product photos are still placeholders taken
+// from the approved design. Replace a file in app/assets/home/ to change one.
+// A hero video goes in `homeHero.video`.
 import conveyorRollers from "~/assets/home/conveyor-rollers.jpg";
 import conveyorSystems from "~/assets/home/conveyor-systems.jpg";
 import heroImage from "~/assets/home/hero.jpg";

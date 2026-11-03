@@ -1,6 +1,6 @@
 # B.P. Engineers website: architecture
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 This document describes how the B.P. Engineers website (bpfoundry.in) is built as a React application. The site was rebuilt from an earlier static site in plain HTML, CSS and JavaScript, matching its appearance and behaviour. The owner subsequently approved the animated foundry-pour browser-tab icon described below, five product pages with a design of their own (see [Product pages](#product-pages)) and a new design for the home page (see [Home page](#home-page)).
 
@@ -46,7 +46,7 @@ app/
   content/                text and lists as typed data, icons, articles
     product-pages/        one file per product page, from the product page workbook
   lib/                    form requests, form memory, page-change handling, page frame
-  assets/home/            the home page photos, placeholders for now
+  assets/home/            the home page photos, some still placeholders
   app.css                 base rules, theme, Tailwind entry
 public/                   files copied into the build as they are, including .htaccess
 scripts/preview.mjs       serves the production build locally
@@ -171,13 +171,14 @@ The owner approved a new design for the home page, given as five screenshots of 
 
 **Content.** All text is in `content/home.ts`. It follows the wording of the approved design and says what the original home page said: the products, Mubarikpur in Punjab, since 1990, custom and OEM work, supply across India. The Moulding Boxes card and list entry lead to the Moulding Boxes product page; the other products and the industries lead to `/products`, and the featured guide to the moulding box article. The original page's ticker, strength cards and industry cards are gone with it.
 
-**Photos and film.** The photos in `app/assets/home/` are placeholders, cut from the approved design's screenshots and cleaned of the text printed over them. To use a real photo, replace the file of the same name; the layout crops each photo to its frame. Setting `homeHero.video` to the address of a muted film plays it in the hero instead of the photo and shows the "Factory film" control that pauses it.
+**Photos and film.** The photos are in `app/assets/home/`. Three are the owner's own photos of moulding boxes: the Moulding boxes card (`moulding-boxes.jpg`), the workshop (`workshop.jpg`) and the featured guide (`knowledge-moulding-boxes.jpg`, the product on white, widened with white to the frame's shape). The hero photo and the Pouring ladles, Conveyor systems and Conveyor rollers cards are still placeholders, cut from the approved design's screenshots and cleaned of the text printed over them. To change a photo, replace the file of the same name; the layout crops each photo to its frame. Setting `homeHero.video` to the address of a muted film plays it in the hero instead of the photo and shows the "Factory film" control that pauses it.
 
 **Design.**
 
 - The theme values are prefixed `landing-` (see [Styling](#styling)). Sizes follow the window: at 1265px, the width of the approved screenshots, they match the design. On narrower windows the sections stack, at 900, 768 or 600px depending on the section.
 - The fonts are Gelasio and Arimo, the product pages' serif and sans, loaded through the route's `links` from the same Google Fonts address.
 - The drawing in the custom manufacturing section is an SVG (`CustomSection.tsx`), not a picture, so it stays sharp at every size.
+- The workshop photo darkens slightly towards its foot, so that its captions stay readable over a light part of the photo.
 - No animation was added. The back-to-top button scrolls smoothly unless the visitor asks for reduced motion.
 
 ## Content
@@ -290,6 +291,6 @@ So every push to `main` that passes the checks goes live within a few minutes. I
 2. **Meaning of growth:** whether app features are expected, or only more content. The design assumes content first.
 3. **Node version:** Node 22.22 or later is needed before moving to React Router 8. The deploy workflow uses the latest Node 22.
 4. **Page views in Google Analytics:** confirm after the first deploy that moving between pages records page views (see [Forms and analytics](#forms-and-analytics)).
-5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)). The home page photos are placeholders taken from its approved design, and the factory film is still to come (see [Home page](#home-page)).
+5. **Product photos:** the product pages show line drawings until there are photos (see [Product pages](#product-pages)). On the home page, the hero photo and three product photos are still placeholders taken from its approved design, and the factory film is still to come (see [Home page](#home-page)).
 6. **Drawing uploads:** the product page form asks for drawings by WhatsApp or email. Uploading them needs the Google Apps Script to accept files.
 7. **Workbook questions:** bush hardness is 58–62 HRC in the Bushes specifications but 58–60 HRC in its FAQ and on the Moulding Boxes page; the pallet car bearing make "NGC" may mean NBC. The pages show both as written.
