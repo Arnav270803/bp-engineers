@@ -28,12 +28,14 @@ function HeroFilm() {
     else element.pause();
   }
 
-  // Never taller than the screen, with room for the control under it.
+  // Wider windows: never taller than the screen, with room for the control
+  // under it. Phones: the film fills the hero, which takes the film's shape,
+  // and the control joins the text laid over it.
   return (
-    <div className="w-full max-w-[calc((100svh_-_76px)*0.5625)] self-end justify-self-end [grid-area:film] upto-600:justify-self-start">
+    <div className="w-full max-w-[calc((100svh_-_76px)*0.5625)] self-end justify-self-end [grid-area:film] upto-600:contents">
       <video
         ref={video}
-        className="block aspect-[9/16] h-auto w-full bg-landing-dark-raised object-contain"
+        className="block aspect-[9/16] h-auto w-full bg-landing-dark-raised object-contain upto-600:absolute upto-600:inset-0 upto-600:-z-20 upto-600:h-full upto-600:object-cover"
         src={homeHero.video}
         poster={homeHero.poster}
         width={720}
@@ -45,7 +47,7 @@ function HeroFilm() {
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       />
-      <div className="mt-4 flex items-center gap-3.5 font-landing-sans text-9 leading-[1] font-bold tracking-caps-wide uppercase">
+      <div className="mt-4 flex items-center gap-3.5 font-landing-sans text-9 leading-[1] font-bold tracking-caps-wide uppercase upto-600:mt-0 upto-600:[grid-area:control]">
         <button
           type="button"
           onClick={toggle}
@@ -68,13 +70,17 @@ function HeroFilm() {
  * The opening screen: the title, the way into the products and the film.
  * Wide windows put the film in a column on the right, as tall as the screen
  * allows. Tablets put the title across the top and the film beside the
- * lines below it; phones stack everything, with the film under the title.
+ * lines below it. On phones the film fills the whole hero, as the photo did,
+ * with the text laid over it; the hero takes the film's upright shape, so
+ * the film covers it without losing any of its frame.
  */
 export function HomeHero() {
   return (
-    <section className="relative overflow-hidden bg-landing-dark-deep text-landing-on-dark">
-      <div className="grid min-h-[max(640px,100svh)] grid-cols-[minmax(0,1fr)_min(40vw,calc((max(640px,100svh)_-_192px)*0.5625))] grid-rows-[auto_minmax(0,1fr)_auto] gap-x-landing-gutter px-landing-gutter pt-26 pb-10.5 [grid-template-areas:'top_film'_'title_film'_'bottom_film'] upto-900:grid-cols-[minmax(0,1fr)_46%] upto-900:gap-y-10 upto-900:[grid-template-areas:'top_top'_'title_title'_'bottom_film'] upto-600:grid-cols-[minmax(0,1fr)] upto-600:grid-rows-[auto_auto_auto_auto] upto-600:gap-y-7 upto-600:[grid-template-areas:'top'_'title'_'film'_'bottom']">
-        <div className="flex items-start justify-between gap-6 [grid-area:top]">
+    <section className="relative isolate overflow-hidden bg-landing-dark-deep text-landing-on-dark">
+      {/* Phones: shade the top and the foot of the film so the text stays readable. */}
+      <div className="absolute inset-0 -z-10 hidden bg-[linear-gradient(180deg,rgba(9,14,11,0.65)_0%,rgba(9,14,11,0.5)_24%,rgba(9,14,11,0.12)_36%,rgba(9,14,11,0.42)_50%,rgba(9,14,11,0.62)_62%,rgba(9,14,11,0.88)_100%)] upto-600:block"></div>
+      <div className="grid min-h-[max(640px,100svh)] grid-cols-[minmax(0,1fr)_min(40vw,calc((max(640px,100svh)_-_192px)*0.5625))] grid-rows-[auto_minmax(0,1fr)_auto] gap-x-landing-gutter px-landing-gutter pt-26 pb-10.5 [grid-template-areas:'top_film'_'title_film'_'bottom_film'] upto-900:grid-cols-[minmax(0,1fr)_46%] upto-900:gap-y-10 upto-900:[grid-template-areas:'top_top'_'title_title'_'bottom_film'] upto-600:aspect-[9/16] upto-600:min-h-auto upto-600:grid-cols-[minmax(0,1fr)] upto-600:grid-rows-[auto_minmax(0,1fr)_auto_auto_auto] upto-600:gap-y-6 upto-600:pb-7 upto-600:[grid-template-areas:'top'_'.'_'title'_'bottom'_'control']">
+        <div className="flex items-start justify-between gap-6 [grid-area:top] upto-600:[text-shadow:0_1px_8px_rgba(9,14,11,0.6)]">
           <p className={smallCaps}>
             {homeHero.eyebrow[0]}
             <br />
@@ -87,7 +93,7 @@ export function HomeHero() {
           </p>
         </div>
 
-        <div className="@container self-end pt-16 [grid-area:title] upto-900:pt-0">
+        <div className="@container self-end pt-16 [grid-area:title] upto-900:pt-0 upto-600:[text-shadow:0_1px_16px_rgba(9,14,11,0.45)]">
           <h1 className="font-landing-sans font-normal uppercase">
             <span className="block text-landing-hero leading-[0.84] tracking-display">{homeHero.title}</span>
             <span className="mt-3 block text-landing-hero-sub leading-[1.1] tracking-[-0.01em]">
@@ -97,7 +103,7 @@ export function HomeHero() {
         </div>
 
         <div className="mt-23 flex flex-wrap items-end justify-between gap-6 self-end [grid-area:bottom] upto-900:mt-0">
-          <p className="font-landing-sans text-14 leading-[21px]">
+          <p className="font-landing-sans text-14 leading-[21px] upto-600:[text-shadow:0_1px_8px_rgba(9,14,11,0.6)]">
             {homeHero.lines[0]}
             <br />
             {homeHero.lines[1]}
