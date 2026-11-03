@@ -1,11 +1,12 @@
-// Text and pictures of the home page, in its own design (ARCHITECTURE.md,
-// "Home page"). The moulding box, workshop and guide photos are the owner's;
-// the hero and the other three product photos are still placeholders taken
-// from the approved design. Replace a file in app/assets/home/ to change one.
-// A hero video goes in `homeHero.video`.
+// Text, pictures and the film of the home page, in its own design
+// (ARCHITECTURE.md, "Home page"). The film and the moulding box, workshop and
+// guide photos are the owner's; the other three product photos are still
+// placeholders taken from the approved design. Replace a file in
+// app/assets/home/ to change one.
 import conveyorRollers from "~/assets/home/conveyor-rollers.jpg";
 import conveyorSystems from "~/assets/home/conveyor-systems.jpg";
-import heroImage from "~/assets/home/hero.jpg";
+import heroFilm from "~/assets/home/hero-film.mp4";
+import heroPoster from "~/assets/home/hero-film-poster.jpg";
 import guideImage from "~/assets/home/knowledge-moulding-boxes.jpg";
 import mouldingBoxes from "~/assets/home/moulding-boxes.jpg";
 import pouringLadles from "~/assets/home/pouring-ladles.jpg";
@@ -46,9 +47,10 @@ export const homeMenu = {
 };
 
 export const homeHero = {
-  image: heroImage,
-  /** The address of a muted, looping film to play instead of the photo. */
-  video: undefined as string | undefined,
+  /** The factory film: upright (9:16), silent, shown whole and on a loop. */
+  video: heroFilm,
+  /** The film's first frame, shown until the film plays. */
+  poster: heroPoster,
   eyebrow: ["Foundry equipment", "made to endure."],
   since: ["1990—", "Today"],
   title: "Engineered",

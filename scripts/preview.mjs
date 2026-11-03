@@ -20,6 +20,7 @@ const TYPES = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".mp4": "video/mp4",
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".txt": "text/plain; charset=utf-8",
@@ -48,10 +49,31 @@ const server = createServer(async (request, response) => {
     response.end("Not found");
     return;
   }
-  response.writeHead(200, {
-    "content-type": TYPES[path.extname(file).toLowerCase()] ?? "application/octet-stream",
-  });
-  response.end(await readFile(file));
+  const type = TYPES[path.extname(file).toLowerCase()] ?? "application/octet-stream";
+  const body = await readFile(file);
+  // Part of a file, as static hosts send it: browsers ask for parts of a film
+  // to start it and to jump within it, and Safari plays no film without this.
+  const range = /^bytes=(\d*)-(\d*)$/.exec(request.headers.range ?? "");
+  if (range && (range[1] || range[2])) {
+    const size = body.length;
+    const start = range[1] ? Number(range[1]) : Math.max(0, size - Number(range[2]));
+    const end = range[1] && range[2] ? Math.min(Number(range[2]), size - 1) : size - 1;
+    if (start > end) {
+      response.writeHead(416, { "content-range": `bytes */${size}` });
+      response.end();
+      return;
+    }
+    response.writeHead(206, {
+      "content-type": type,
+      "accept-ranges": "bytes",
+      "content-range": `bytes ${start}-${end}/${size}`,
+      "content-length": end - start + 1,
+    });
+    response.end(body.subarray(start, end + 1));
+    return;
+  }
+  response.writeHead(200, { "content-type": type, "accept-ranges": "bytes" });
+  response.end(body);
 });
 
 server.listen(port, "127.0.0.1", () => {

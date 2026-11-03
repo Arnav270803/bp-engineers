@@ -159,9 +159,11 @@
   --text-editorial-statement: clamp(24px, 2.36vw, 34px);
   --text-editorial-figure: clamp(42px, 3.75vw, 54px);
   --text-editorial-sign: clamp(40px, 5.28vw, 76px);
-  /* Home page. Sizes follow the window, as in the approved design at 1265px. */
-  --text-landing-hero: clamp(46px, 13.9vw, 200px);
-  --text-landing-hero-sub: clamp(26px, 4.4vw, 64px);
+  /* Home page. Sizes follow the window, as in the approved design at 1265px.
+     The hero title follows the width of its column instead (cqi): "ENGINEERED"
+     is 6.09 times as wide as its size, so 16cqi fills the column. */
+  --text-landing-hero: clamp(40px, 16cqi, 200px);
+  --text-landing-hero-sub: clamp(26px, 5.06cqi, 64px);
   --text-landing-title: clamp(38px, 4.6vw, 66px);
   --text-landing-title-sm: clamp(32px, 3.5vw, 50px);
   --text-landing-subtitle: clamp(26px, 2.75vw, 38px);
